@@ -8,8 +8,9 @@
 // Version : 0.1							               //
 /////////////////////////////////////////////*/
 
-
 // ---------------------------------------------------------------------------------------------------- Array mit Kontaktobjekten
+
+var contact_deleted = false;
 
 var contactsArray = [
 {
@@ -94,9 +95,13 @@ var ContactList = React.createClass({ displayName: "ContactList",
     contactsArray.splice(index, 1);
     console.log(contactName);
     console.log(contactsArray.length);
+    contactsArray[0].isActive = true;
+    this.setState({ person: contactsArray[0] });
+    //this.setState({contactsArray: contactsArray});          // State aktualisieren
     
-    this.setState({contactsArray: contactsArray});          // State aktualisieren
     console.log('Kontakt gelöscht');
+    //console.log({ person: contactsArray[0] });
+    contact_deleted = true;
   },
   
  // ---------------------------------------------- Elemente darstellen
@@ -130,30 +135,43 @@ var ContactList = React.createClass({ displayName: "ContactList",
       React.createElement("div", { className: "right" },
       // Kontaktinformationen darstellen
       React.createElement(ContactInfo, { person: this.state.person }))));
-
-
-
   } });
 
+  
 // ---------------------------------------------------------------------------------------------------- Kontaktinfo anzeigen (rechts)
 var ContactInfo = React.createClass({ displayName: "ContactInfo",
   render: function () {
-    var styles = {
-      backgroundImage: 'url(' + this.props.person.image + ')' };
-
-    return (
-      // Oberer Bereich
-      React.createElement("div", { className: "contact-info" },
-      React.createElement("header", null,
-      React.createElement("div", { className: "image", style: styles }),
-      React.createElement("h3", { className: "name" }, this.props.person.name)),
-
-      // Unterer Bereich
-      React.createElement("section", null,
-      React.createElement("p", { className: "phone" }, "Phone: ", this.props.person.phone),
-      React.createElement("p", { className: "email" }, "Email: ", this.props.person.email),
-      React.createElement("p", { className: "address" }, "Address: ", this.props.person.address))));
-  } });
+    // Wenn ein Kontakt gelöscht wurde, einen Hinweis anzeigen
+    if(  contact_deleted == true)
+    {
+      contact_deleted = false;
+      var styles = {
+        backgroundImage: 'url(' + this.props.person.image + ')' };
+  
+      return (
+        // Bestätigung für das Löschen
+        React.createElement("h2", null, "Kontakt gelöscht "));
+    }
+    // Wenn keine Kontakt gelöscht wurde, jedoch ein Kontakt gewählt worden ist, diese Daten anzeigen
+    else
+    {
+      var styles = {
+        backgroundImage: 'url(' + this.props.person.image + ')' };
+  
+      return (
+        // Oberer Bereich
+        React.createElement("div", { className: "contact-info" },
+        React.createElement("header", null,
+        React.createElement("div", { className: "image", style: styles }),
+        React.createElement("h3", { className: "name" }, this.props.person.name)),
+  
+        // Unterer Bereich
+        React.createElement("section", null,
+        React.createElement("p", { className: "phone" }, "Phone: ", this.props.person.phone),
+        React.createElement("p", { className: "email" }, "Email: ", this.props.person.email),
+        React.createElement("p", { className: "address" }, "Address: ", this.props.person.address))));
+    }
+  }});
 
 React.render(
 React.createElement(ContactList, null),
