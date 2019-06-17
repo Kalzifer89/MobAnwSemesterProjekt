@@ -1,10 +1,23 @@
+/*/////////////////////////////////////////////
+// Kontaktliste - Semesterprojekt - MobAnw   //
+// Fachbereich Medien FH-Kiel - 4. Semester  //
+// Beschreibung : Charterstellung            //
+// Ersteller 1 : Sven Krumbeck | 931087 		 //
+// Ersteller 2 : Sven Möller   | 918958 		 //
+// Stand : 17.06.2019 						           //
+// Version : 0.1							               //
+/////////////////////////////////////////////*/
+
+
+// ---------------------------------------------------------------------------------------------------- Array mit Kontaktobjekten
+
 var contactsArray = [
 {
   name: 'Mary Margaret Blanchard',
   phone: '555-1234',
   email: 'snowwhite@ouatmail.com',
   address: '945 N. Storybrook Ln',
-  image: 'http://assets.wornon.tv/uploads/2012/03/s01e05-marys-brown-coat-over-teal-skirt-yellow-flatsb.jpg',
+  image: 'http://www.starwarshelmets.com/2012/Sideshow_weathered3PO04.jpg',
   isActive: true },
 
 {
@@ -36,11 +49,12 @@ var contactsArray = [
   phone: '555-4653',
   email: 'rumplestiltskin@ouatmail.com',
   address: '101 N. Main St',
-  image: 'http://happynicetimepeoplecom.c.presscdn.com/wp-content/uploads/2014/09/Boardwalk-Empire-maybe.jpg',
+  image: 'https://captainawkwarddotcom.files.wordpress.com/2014/02/darth-vader-original_0.jpg',
   isActive: false }];
 
 
 
+// ---------------------------------------------------------------------------------------------------- Kontaktliste anzeigen (rechts)
 var ContactList = React.createClass({ displayName: "ContactList",
   getInitialState: function () {
     return {
@@ -50,16 +64,48 @@ var ContactList = React.createClass({ displayName: "ContactList",
   handleClick: function (contact) {
     this.setState({ person: contact });
   },
+  // ---------------------------------------------- Funktion: Neuen Kontakt erzeugen
   newContact: function () {
-    console.log('Hey ich habe geklickt');
     contactsArray[0].name = 'Sven Krumbeck';
+    this.setState({contactsArray: contactsArray});          // State aktualisieren
+    console.log('Neuen Kontakt erstellt');
   },
+  // ---------------------------------------------- Funktion: Kontakt bearbeiten
+  editContact: function () {
+
+      console.log('Kontakt bearbeitet');
+      this.setState({contactsArray: contactsArray});          // State aktualisieren
+    },
+  // ---------------------------------------------- Funktion: Kontakt löschen
+  deleteContact: function (contactName) {
+
+    let index;
+    // Durch das bisherige Array gehen und den übergebenen Namen suchen
+    for (let i = 0; i < contactsArray.length; i++) 
+    {
+      // Wnn der name gefunden wurde den Index auslesen
+      if (contactsArray[i].name == contactName) 
+      {
+        index = i;
+        break;
+      }
+    }
+    // Element mit dem gefundenen Index löschen
+    contactsArray.splice(index, 1);
+    console.log(contactName);
+    console.log(contactsArray.length);
+    
+    this.setState({contactsArray: contactsArray});          // State aktualisieren
+    console.log('Kontakt gelöscht');
+  },
+  
+ // ---------------------------------------------- Elemente darstellen
   render: function () {
     return (
       React.createElement("div", { className: "app" },
       React.createElement("div", { className: "left" },
-      React.createElement("h2", null, "Contacts"),
-      React.createElement("button", { className: "newContact",  onClick: this.newContact.bind()}, "newContact"),
+      React.createElement("h2", null, "Kontakte "),                                                                               // Überschrift für Kontaktliste
+      React.createElement("button", { className: "newContact",  onClick: this.newContact.bind()}, "newContact"),                  // Button um neuen Kontakt zu erstellen
       React.createElement("div", { className: "contacts-container" },
       contactsArray.map(function (c) {
         console.log(c);
@@ -68,45 +114,48 @@ var ContactList = React.createClass({ displayName: "ContactList",
 
         var contactStyles = {
           backgroundColor: c === this.state.person ? '#46733E' : '' };
-
+        // Ausgewählten Kontakt mitteilen
         return (
-          React.createElement("div", { className: "contact", onClick: this.handleClick.bind(this, c), style: contactStyles },
-          React.createElement("span", { className: "image", style: imageStyles }),
-          React.createElement("span", { className: "name" }, c.name)));
-
-
+          React.createElement
+          (
+            "div", { className: "contact", onClick: this.handleClick.bind(this, c), style: contactStyles },                       // Mitteilen, welcher Kontakt gewählt wurde
+            React.createElement("span", { className: "image", style: imageStyles }),                                              // Kontaktbild in der Liste
+            React.createElement("span", { className: "name" }, c.name),                                                           // Name des Kontaktes in der Liste
+            React.createElement("button", { className: "editContact",  onClick: this.editContact.bind()}, "editContact"),         // Button um den jeweiligen Kontakt zu bearbeiten
+            React.createElement("button", { className: "deleteContact",  onClick: this.deleteContact.bind(this, c.name)}, "deleteContact")    // Button um den jeweiligen kontakt zu löschen
+          ));
       }, this))),
 
-
+      // Rechte Spalte erzeugen
       React.createElement("div", { className: "right" },
+      // Kontaktinformationen darstellen
       React.createElement(ContactInfo, { person: this.state.person }))));
 
 
 
   } });
 
-
+// ---------------------------------------------------------------------------------------------------- Kontaktinfo anzeigen (rechts)
 var ContactInfo = React.createClass({ displayName: "ContactInfo",
   render: function () {
     var styles = {
       backgroundImage: 'url(' + this.props.person.image + ')' };
 
     return (
+      // Oberer Bereich
       React.createElement("div", { className: "contact-info" },
       React.createElement("header", null,
       React.createElement("div", { className: "image", style: styles }),
       React.createElement("h3", { className: "name" }, this.props.person.name)),
 
+      // Unterer Bereich
       React.createElement("section", null,
       React.createElement("p", { className: "phone" }, "Phone: ", this.props.person.phone),
       React.createElement("p", { className: "email" }, "Email: ", this.props.person.email),
       React.createElement("p", { className: "address" }, "Address: ", this.props.person.address))));
-
-
-
   } });
-
 
 React.render(
 React.createElement(ContactList, null),
 document.body);
+

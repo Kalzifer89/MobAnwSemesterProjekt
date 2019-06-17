@@ -19,8 +19,8 @@ body {
   background: #46733E;
 }
 .app {
-  height: 400px;
-  width: 500px;
+  height: 600px;
+  width: 800px;
   display: flex;
   border: solid 2px #001C00;
 }
@@ -36,7 +36,7 @@ body {
   text-align: center;
 }
 .contacts-container {
-  height: 330px;
+  height: 530px;
   overflow: auto;
 }
 .contact {
