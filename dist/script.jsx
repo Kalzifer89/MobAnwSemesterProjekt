@@ -20,51 +20,61 @@ class App extends React.Component {
      this.state = {
        contacts: [
         {
-          name: 'Mary Margaret Blanchard',
-          age: 12,
-          phone: '555-1234',
-          email: 'snowwhite@ouatmail.com',
-          address: '945 N. Storybrook Ln',
+          name: '3PO, Goldenrod (by Han Solo)',
+          age: 45,
+          phone: '1234-5678',
+          email: 'c3po@therebelalliance.com',
+          address: 'Tatooine',
           image: 'http://www.starwarshelmets.com/2012/Sideshow_weathered3PO04.jpg',
           isActive: true
         },
 
         {
-          name: 'David Nolan',
-          age: 22,
+          name: 'Obi-Wan Kenobi',
+          age: 56,
           phone: '555-9876',
-          email: 'princecharming@ouatmail.com',
-          address: '945 N. Storybrook Ln',
-          image: 'http://cdn.playbuzz.com/cdn/e6516fc7-27c5-4798-8097-3553691017a2/5cab9b6e-6a4c-4bda-90fe-c8af89826b03.jpg',
+          email: 'obi.wan@jediorder.com',
+          address: 'Stewjon',
+          image: 'https://upload.wikimedia.org/wikipedia/en/3/32/Ben_Kenobi.png',
           isActive: false
         },
 
         {
-          name: 'Emma Swan',
+          name: 'Luke Skywalker',
           age: 34,
           phone: '555-2345',
-          email: 'thesavior@ouatmail.com',
-          address: '693 N. Storybrook Ln',
-          image: 'https://a.wattpad.com/cover/4106257-368-k161010.jpg',
+          email: 'luke.skywalker@therebelalliance.com',
+          address: 'Polis Massa',
+          image: 'http://3.bp.blogspot.com/_wrWQciYjEFU/TLGRKKbz-aI/AAAAAAAAAEQ/3kxzNSS9gXQ/s1600/LukeSkywalker.jpg',
           isActive: false
         },
 
         {
-          name: 'Regina Mills',
+          name: 'Princess Leia',
+          age: 58,
+          phone: '106384',
+          email: 'thebeautyqueen@imperialsenate.com',
+          address: 'Alderaan',
+          image: 'https://timedotcom.files.wordpress.com/2016/12/carrie-fisher-movies-2.jpg',
+          isActive: false
+        },
+
+        {
+          name: 'Jar Jar Bings',
           age: 55,
-          phone: '555-6667',
-          email: 'evilqueen@ouatmail.com',
-          address: '1313 E. Mayor St',
-          image: 'https://s-media-cache-ak0.pinimg.com/originals/11/d3/e9/11d3e91be6df715f88d543374c039e1d.jpg',
+          phone: '405-7331',
+          email: 'jarjeeeeedingsee@gungangrandarmy.com',
+          address: 'Naboo',
+          image: 'https://upload.wikimedia.org/wikipedia/en/4/4b/Jjportrait.jpg',
           isActive: false
         },
 
         {
-          name: 'Mr. Gold',
-          age: 12,
-          phone: '555-4653',
-          email: 'rumplestiltskin@ouatmail.com',
-          address: '101 N. Main St',
+          name: 'Dark Vader',
+          age: 50,
+          phone: '1337',
+          email: 'darth.vader@thedarkside.com',
+          address: 'Tatooine',
           image: 'https://captainawkwarddotcom.files.wordpress.com/2014/02/darth-vader-original_0.jpg',
           isActive: false
         }
@@ -145,31 +155,37 @@ class App extends React.Component {
 
 //HTML Ausgeben um Formular Anzeigen
   render() {
+    // ============================================================================================== Bereich: Neuen Kontakt hinzufügen
     if(contact_new == true)
     {
       return (
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
-      <h2>Neuen Kontakt erstellen</h2>
+      <div class="flex-container">
+          <div>
+            <h2>Neuen Kontakt erstellen</h2>
 
-      <label>Name: <input onChange={this.updateName.bind(this)} type="text"/></label>
-      {<br></br>}
-      <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1"/></label>
-      {<br></br>}
-      <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text"/></label>
-      {<br></br>}
-      <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"/></label>
-      {<br></br>}
-      <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text"/></label>
-      {<br></br>}
-      <label>Bild: <input onChange={this.updateImage.bind(this)} type="text"/></label>
-      {<br></br>}
+            <label>Name: <input onChange={this.updateName.bind(this)} type="text"/></label>
+            {<br></br>}
+            <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1"/></label>
+            {<br></br>}
+            <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text"/></label>
+            {<br></br>}
+            <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"/></label>
+            {<br></br>}
+            <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text"/></label>
+            {<br></br>}
+            <label>Bild: <input onChange={this.updateImage.bind(this)} type="text"/></label>
+            {<br></br>}
 
-      <button onClick={this.saveKontakt.bind(this)}>Speichern</button>
-      <button onClick={this.cancel.bind(this)}>Abbrechen</button>
+            <button onClick={this.saveKontakt.bind(this)}>Speichern</button>
+            <button onClick={this.cancel.bind(this)}>Abbrechen</button>
+          </div>
+      </div>
       </React.Fragment>
       );
     }
+    // ============================================================================================== Bereich: Kontakt bearbeiten
     if(contact_edit == true)
     {
       
@@ -179,29 +195,34 @@ class App extends React.Component {
       return (
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
-      <h2>Kontakt bearbeiten</h2>
-  
-      <label>Name: <input onChange={this.updateName.bind(this)} type="text" value={this.state.contact_to_edit[0].name}/></label>
-      {<br></br>}
+      <div class="flex-container">
+        <div>
+          <h2>Kontakt bearbeiten</h2>
       
-      <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1" value={this.state.contacts[0].age}/></label>
-      {<br></br>}
-      <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text" value={this.state.contacts[0].phone}/></label>
-      {<br></br>}
-      <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"  value={this.state.contacts[0].email}/></label>
-      {<br></br>}
-      <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text" value={this.state.contacts[0].address}/></label>
-      {<br></br>}
-      <label>Bild: <input onChange={this.updateImage.bind(this)} type="text" value={this.state.contacts[0].image}/></label>
-      {<br></br>}
+          <label>Name: <input onChange={this.updateName.bind(this)} type="text" value={this.state.contact_to_edit[0].name}/></label>
+          {<br></br>}
+          
+          <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1" value={this.state.contacts[0].age}/></label>
+          {<br></br>}
+          <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text" value={this.state.contacts[0].phone}/></label>
+          {<br></br>}
+          <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"  value={this.state.contacts[0].email}/></label>
+          {<br></br>}
+          <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text" value={this.state.contacts[0].address}/></label>
+          {<br></br>}
+          <label>Bild: <input onChange={this.updateImage.bind(this)} type="text" value={this.state.contacts[0].image}/></label>
+          {<br></br>}
 
-      <button onClick={this.saveKontakt.bind(this)}>Speichern</button>
-      <button onClick={this.cancel.bind(this)}>Abbrechen</button>
+          <button onClick={this.saveKontakt.bind(this)}>Speichern</button>
+          <button onClick={this.cancel.bind(this)}>Abbrechen</button>
+          </div>
+      </div>
       </React.Fragment>
       
       );
       
     }
+    // ============================================================================================== Bereich: Wenn ein Kontakt gelöscht wurde
     else if(contact_deleted == true)
     {
       contact_deleted = false;
@@ -214,7 +235,6 @@ class App extends React.Component {
 
           <button onClick={this.addKontakt.bind(this)}>Kontakt hinzufügen</button>
 
-          <h2>Alle Kontakte</h2>
             <ul>
               {this.state.contacts.map((item, index) => {
                 return (
@@ -253,7 +273,9 @@ class App extends React.Component {
     else
     {
       //console.log(this.state.contact_to_show[0]);
-      
+      // ============================================================================================== Bereich: Kontakte darstellen und rendern
+      // Unter div class right wird jeweil das Array geprüft und wenn eines mit Inhalt vorhanden ist ausgegeben,
+      // hierbei wird unterschieden, ob ein Kontakt ausgewählt wurde oder einfach die Liste ausgegben werden soll
       return (
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
@@ -263,7 +285,6 @@ class App extends React.Component {
 
           <button onClick={this.addKontakt.bind(this)}>Kontakt hinzufügen</button>
 
-          <h2>Alle Kontakte</h2>
             <ul>
               {this.state.contacts.map((item, index) => {
                 return (
@@ -292,9 +313,8 @@ class App extends React.Component {
             </ul>
           </div>
           <div class="right">
-              <h2>Kontakt</h2>
-              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <img class="contact_image" src={this.state.contact_to_show[0].image}></img> : <img class="contact_image" src={this.state.contacts[0].image}></img>}
-              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div>Name: {this.state.contact_to_show[0].name}</div> : <div>Name: {this.state.contacts[0].name}</div>}
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <img class="contactpicture_right" src={this.state.contact_to_show[0].image}></img> : <img class="contactpicture_right" src={this.state.contacts[0].image}></img>}
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><h2>Name: {this.state.contact_to_show[0].name}</h2></div> : <div><h2>Name: {this.state.contacts[0].name}</h2></div>}
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div>Alter: {this.state.contact_to_show[0].age}</div> : <div>Alter: {this.state.contacts[0].age}</div>}
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div>Telefon: {this.state.contact_to_show[0].phone}</div> : <div>Telefon: {this.state.contacts[0].phone}</div>}
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div>Email: {this.state.contact_to_show[0].email}</div> : <div>Email: {this.state.contacts[0].email}</div>}
@@ -313,240 +333,3 @@ ReactDOM.render(
  <App />,
  document.getElementById('root')
 );
-
-
-
-/*
-// ---------------------------------------------------------------------------------------------------- Array mit Kontaktobjekten
-
-var contact_deleted = false;
-var contact_make_new = false;
-var contact_edit = false;
-
-
-var contactsArray = [
-{
-  name: 'Mary Margaret Blanchard',
-  phone: '555-1234',
-  email: 'snowwhite@ouatmail.com',
-  address: '945 N. Storybrook Ln',
-  image: 'http://www.starwarshelmets.com/2012/Sideshow_weathered3PO04.jpg',
-  isActive: true },
-
-{
-  name: 'David Nolan',
-  phone: '555-9876',
-  email: 'princecharming@ouatmail.com',
-  address: '945 N. Storybrook Ln',
-  image: 'http://cdn.playbuzz.com/cdn/e6516fc7-27c5-4798-8097-3553691017a2/5cab9b6e-6a4c-4bda-90fe-c8af89826b03.jpg',
-  isActive: false },
-
-{
-  name: 'Emma Swan',
-  phone: '555-2345',
-  email: 'thesavior@ouatmail.com',
-  address: '693 N. Storybrook Ln',
-  image: 'https://a.wattpad.com/cover/4106257-368-k161010.jpg',
-  isActive: false },
-
-{
-  name: 'Regina Mills',
-  phone: '555-6667',
-  email: 'evilqueen@ouatmail.com',
-  address: '1313 E. Mayor St',
-  image: 'https://s-media-cache-ak0.pinimg.com/originals/11/d3/e9/11d3e91be6df715f88d543374c039e1d.jpg',
-  isActive: false },
-
-{
-  name: 'Mr. Gold',
-  phone: '555-4653',
-  email: 'rumplestiltskin@ouatmail.com',
-  address: '101 N. Main St',
-  image: 'https://captainawkwarddotcom.files.wordpress.com/2014/02/darth-vader-original_0.jpg',
-  isActive: false }];
-
-
-
-// ===================================================================================================== Kontaktliste anzeigen (rechts)
-var ContactList = React.createClass({ displayName: "ContactList",
-  getInitialState: function () {
-    return {
-      person: contactsArray[0] };
-
-  },
-  handleClick: function (contact) {
-    this.setState({ person: contact });
-  },
-  // ----------------------------------------------------------------- Funktion: Neuen Kontakt erzeugen
-  newContact: function () {
-
-    contact_make_new = true;
-
-    contactsArray[0].name = 'Sven Krumbeck';
-    this.setState({contactsArray: contactsArray}); // State aktualisieren
-    console.log('Neuen Kontakt erstellt');
-  },
-  // ----------------------------------------------------------------- Funktion: Kontakte bearbeiten
-  editContacts: function () {
-
-      contact_edit = !contact_edit;
-
-      //contactsArray[index].name = 'Sven Krumbeck';
-      console.log('Kontakte bearbeiten aktiv');
-      this.setState({contactsArray: contactsArray}); // State aktualisieren
-    },
-  // ----------------------------------------------------------------- Funktion: Kontakt löschen
-  deleteContact: function (contactName) {
-    contact_edit = false;
-    let index;
-    // Durch das bisherige Array gehen und den übergebenen Namen suchen
-    for (let i = 0; i < contactsArray.length; i++)
-    {
-      // Wnn der name gefunden wurde den Index auslesen
-      if (contactsArray[i].name == contactName)
-      {
-        index = i;
-        break;
-      }
-    }
-    // Element mit dem gefundenen Index löschen
-    contactsArray.splice(index, 1);
-    console.log(contactName);
-    console.log(contactsArray.length);
-    contactsArray[0].isActive = true;
-    //this.setState({ person: contactsArray[0] });
-    //this.setState({contactsArray: contactsArray});  // State aktualisieren
-
-    console.log('Kontakt gelöscht');
-    //console.log({ person: contactsArray[0] });
-    contact_deleted = true;
-  },
-
- // ----------------------------------------------------------------- Elemente darstellen
-  render: function ()
-  {
-    return (
-      React.createElement("div", { className: "app" },
-      React.createElement("div", { className: "left" },
-      React.createElement("h2", null, "Kontakte "),                                                                               // Überschrift für Kontaktliste
-      React.createElement("button", { className: "newContact",  onClick: this.newContact.bind()}, "newContact"),                  // Button um neuen Kontakt zu erstellen
-      React.createElement("button", { className: "editContacts",  onClick: this.editContacts.bind()}, "editContacts"),            // Button um Kontakte zu bearbeiten
-      React.createElement("div", { className: "contacts-container" },
-      contactsArray.map(function (c) {
-        //console.log(c);
-        var imageStyles = {
-          backgroundImage: 'url(' + c.image + ')' };
-
-        var contactStyles = {
-          backgroundColor: c === this.state.person ? '#46733E' : '' };
-        // Ausgewählten Kontakt mitteilen
-        return (
-          React.createElement
-          (
-            "div", { className: "contact", onClick: this.handleClick.bind(this, c), style: contactStyles },                       // Mitteilen, welcher Kontakt gewählt wurde
-            React.createElement("span", { className: "image", style: imageStyles }),                                              // Kontaktbild in der Liste
-            React.createElement("span", { className: "name" }, c.name),                                                           // Name des Kontaktes in der Liste
-            React.createElement("button", { className: "deleteContact",  onClick: this.deleteContact.bind(this, c.name)}, "deleteContact")    // Button um den jeweiligen kontakt zu löschen
-          ));
-      }, this))),
-
-      // Rechte Spalte erzeugen
-      React.createElement("div", { className: "right" },
-      // Kontaktinformationen darstellen
-      React.createElement(ContactInfo, { person: this.state.person }))));
-  }
-});
-
-
-// ===================================================================================================== Kontaktinfo anzeigen (rechts)
-var ContactInfo = React.createClass({ displayName: "ContactInfo",
-      // ----------------------------------------------------------------- Funktion: Kontakt speichern
-      saveContact: function (contactName) {
-
-        contact_edit = false;
-
-          let index;
-          // Durch das bisherige Array gehen und den übergebenen Namen suchen
-          for (let i = 0; i < contactsArray.length; i++)
-          {
-            // Wenn der name gefunden wurde den Index auslesen
-            if (contactsArray[i].name == contactName)
-            {
-              index = i;
-              break;
-            }
-          }
-          console.log("value of input field : "+this.state.name);
-          contactsArray[index].name = this.state.name;
-          console.log('Kontakt erfolgreich bearbeitet');
-          this.setState({contactsArray: contactsArray}); // State aktualisieren
-      },
-      // ----------------------------------------------------------------- Funktion: Bearbeiten beenden
-      cancelSave: function () {
-        contact_edit = false;
-        this.setState({contactsArray: contactsArray}); // State aktualisieren
-      },
-      // ----------------------------------------------------------------- Funktion: Inputfield aktualisieren
-      updateName: function (event){
-        //console.log("input field updated with "+evt.target.value);
-        this.setState({name: event.target.value}); // State aktualisieren
-        //this.state={inputfield: evt.target.value};
-      },
-  render: function () {
-    // Wenn ein Kontakt gelöscht wurde, einen Hinweis anzeigen
-    if(contact_deleted == true)
-    {
-      contact_deleted = false;
-      var styles = {
-        backgroundImage: 'url(' + this.props.person.image + ')' };
-
-      return (
-        // Bestätigung für das Löschen
-        React.createElement("h2", null, "Kontakt gelöscht "));
-    }
-    else if (contact_edit == true)
-    {
-      var styles = {
-        backgroundImage: 'url(' + this.props.person.image + ')' };
-
-      return (
-        // Oberer Bereich
-        React.createElement("div", { className: "contact-info" },
-        React.createElement("header", null, "Bearbeiten aktiv",
-        React.createElement("div", { className: "image", style: styles })),
-
-        // Unterer Bereich
-        React.createElement("section", null,
-        React.createElement("input", { className: "input_name", placeholder: "Bitte Namen eingeben", value: this.props.person.name, autoFocus: true, onChange: this.updateName.bind(this)}, this.props.person.name),
-        React.createElement("input", { className: "input_phone", placeholder: "Bitte Telefonnummer eingeben", value: this.props.person.phone}, this.props.person.phone),
-        React.createElement("input", { className: "input_email", placeholder: "Bitte eine Emailadresse eingeben", value: this.props.person.email}, this.props.person.email),
-        React.createElement("input", { className: "input_address", placeholder: "Adresse eingeben", value: this.props.person.address}, this.props.person.address),
-        React.createElement("input", { className: "input_image", placeholder: "Bildadresse eingeben", value: this.props.person.image}, this.props.person.image),
-        React.createElement("button", { className: "cancelSave",  onClick: this.cancelSave.bind()}, "Abbrechen"),
-        React.createElement("button", { className: "saveContact",  onClick: this.saveContact.bind(this, this.props.person.name)}, "Kontakt speichern"))));
-    }
-    // Wenn keine Kontakt gelöscht wurde, jedoch ein Kontakt gewählt worden ist, diese Daten anzeigen
-    else
-    {
-      var styles = {
-        backgroundImage: 'url(' + this.props.person.image + ')' };
-
-      return (
-        // Oberer Bereich
-        React.createElement("div", { className: "contact-info" },
-        React.createElement("header", null,
-        React.createElement("div", { className: "image", style: styles }),
-        React.createElement("h3", { className: "name" }, this.props.person.name)),
-
-        // Unterer Bereich
-        React.createElement("section", null,
-        React.createElement("p", { className: "phone" }, "Phone: ", this.props.person.phone),
-        React.createElement("p", { className: "email" }, "Email: ", this.props.person.email),
-        React.createElement("p", { className: "address" }, "Address: ", this.props.person.address))));
-    }
-  }});
-
-React.render(
-React.createElement(ContactList, null),
-document.body);
-*/
