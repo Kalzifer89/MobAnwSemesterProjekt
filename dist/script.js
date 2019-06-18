@@ -11,6 +11,8 @@
 // ---------------------------------------------------------------------------------------------------- Array mit Kontaktobjekten
 
 var contact_deleted = false;
+var contact_make_new = false;
+var contact_edit = false;
 
 var contactsArray = [
 {
@@ -55,7 +57,7 @@ var contactsArray = [
 
 
 
-// ---------------------------------------------------------------------------------------------------- Kontaktliste anzeigen (rechts)
+// ===================================================================================================== Kontaktliste anzeigen (rechts)
 var ContactList = React.createClass({ displayName: "ContactList",
   getInitialState: function () {
     return {
@@ -65,21 +67,27 @@ var ContactList = React.createClass({ displayName: "ContactList",
   handleClick: function (contact) {
     this.setState({ person: contact });
   },
-  // ---------------------------------------------- Funktion: Neuen Kontakt erzeugen
+  // ----------------------------------------------------------------- Funktion: Neuen Kontakt erzeugen
   newContact: function () {
+
+    contact_make_new = true;
+
     contactsArray[0].name = 'Sven Krumbeck';
-    this.setState({contactsArray: contactsArray});          // State aktualisieren
+    this.setState({contactsArray: contactsArray}); // State aktualisieren
     console.log('Neuen Kontakt erstellt');
   },
-  // ---------------------------------------------- Funktion: Kontakt bearbeiten
-  editContact: function () {
+  // ----------------------------------------------------------------- Funktion: Kontakte bearbeiten
+  editContacts: function () {
 
-      console.log('Kontakt bearbeitet');
-      this.setState({contactsArray: contactsArray});          // State aktualisieren
+      contact_edit = !contact_edit;
+
+      //contactsArray[index].name = 'Sven Krumbeck';
+      console.log('Kontakte bearbeiten aktiv');
+      this.setState({contactsArray: contactsArray}); // State aktualisieren
     },
-  // ---------------------------------------------- Funktion: Kontakt löschen
+  // ----------------------------------------------------------------- Funktion: Kontakt löschen
   deleteContact: function (contactName) {
-
+    contact_edit = false;
     let index;
     // Durch das bisherige Array gehen und den übergebenen Namen suchen
     for (let i = 0; i < contactsArray.length; i++) 
@@ -96,24 +104,26 @@ var ContactList = React.createClass({ displayName: "ContactList",
     console.log(contactName);
     console.log(contactsArray.length);
     contactsArray[0].isActive = true;
-    this.setState({ person: contactsArray[0] });
-    //this.setState({contactsArray: contactsArray});          // State aktualisieren
+    //this.setState({ person: contactsArray[0] });
+    //this.setState({contactsArray: contactsArray});  // State aktualisieren
     
     console.log('Kontakt gelöscht');
     //console.log({ person: contactsArray[0] });
     contact_deleted = true;
   },
   
- // ---------------------------------------------- Elemente darstellen
-  render: function () {
+ // ----------------------------------------------------------------- Elemente darstellen
+  render: function () 
+  {
     return (
       React.createElement("div", { className: "app" },
       React.createElement("div", { className: "left" },
       React.createElement("h2", null, "Kontakte "),                                                                               // Überschrift für Kontaktliste
       React.createElement("button", { className: "newContact",  onClick: this.newContact.bind()}, "newContact"),                  // Button um neuen Kontakt zu erstellen
+      React.createElement("button", { className: "editContacts",  onClick: this.editContacts.bind()}, "editContacts"),            // Button um Kontakte zu bearbeiten
       React.createElement("div", { className: "contacts-container" },
       contactsArray.map(function (c) {
-        console.log(c);
+        //console.log(c);
         var imageStyles = {
           backgroundImage: 'url(' + c.image + ')' };
 
@@ -126,7 +136,6 @@ var ContactList = React.createClass({ displayName: "ContactList",
             "div", { className: "contact", onClick: this.handleClick.bind(this, c), style: contactStyles },                       // Mitteilen, welcher Kontakt gewählt wurde
             React.createElement("span", { className: "image", style: imageStyles }),                                              // Kontaktbild in der Liste
             React.createElement("span", { className: "name" }, c.name),                                                           // Name des Kontaktes in der Liste
-            React.createElement("button", { className: "editContact",  onClick: this.editContact.bind()}, "editContact"),         // Button um den jeweiligen Kontakt zu bearbeiten
             React.createElement("button", { className: "deleteContact",  onClick: this.deleteContact.bind(this, c.name)}, "deleteContact")    // Button um den jeweiligen kontakt zu löschen
           ));
       }, this))),
@@ -135,11 +144,37 @@ var ContactList = React.createClass({ displayName: "ContactList",
       React.createElement("div", { className: "right" },
       // Kontaktinformationen darstellen
       React.createElement(ContactInfo, { person: this.state.person }))));
-  } });
+  } 
+});
 
   
-// ---------------------------------------------------------------------------------------------------- Kontaktinfo anzeigen (rechts)
+// ===================================================================================================== Kontaktinfo anzeigen (rechts)
 var ContactInfo = React.createClass({ displayName: "ContactInfo",
+      // ----------------------------------------------------------------- Funktion: Kontakt speichern
+      saveContact: function (contactName) {
+
+        contact_edit = false;
+    
+          let index;
+          // Durch das bisherige Array gehen und den übergebenen Namen suchen
+          for (let i = 0; i < contactsArray.length; i++) 
+          {
+            // Wnn der name gefunden wurde den Index auslesen
+            if (contactsArray[i].name == contactName) 
+            {
+              index = i;
+              break;
+            }
+          }
+          contactsArray[index].name = input_name.value;
+          console.log('Kontakt erfolgreich bearbeitet');
+          this.setState({contactsArray: contactsArray}); // State aktualisieren
+      },
+      // ----------------------------------------------------------------- Funktion: Bearbeiten beenden
+      cancelSave: function () {
+        contact_edit = false;
+        this.setState({contactsArray: contactsArray}); // State aktualisieren
+      },
   render: function () {
     // Wenn ein Kontakt gelöscht wurde, einen Hinweis anzeigen
     if(  contact_deleted == true)
@@ -151,6 +186,27 @@ var ContactInfo = React.createClass({ displayName: "ContactInfo",
       return (
         // Bestätigung für das Löschen
         React.createElement("h2", null, "Kontakt gelöscht "));
+    }
+    else if (contact_edit == true)
+    {
+      var styles = {
+        backgroundImage: 'url(' + this.props.person.image + ')' };
+  
+      return (
+        // Oberer Bereich
+        React.createElement("div", { className: "contact-info" },
+        React.createElement("header", null, "Bearbeiten aktiv",
+        React.createElement("div", { className: "image", style: styles })),
+  
+        // Unterer Bereich
+        React.createElement("section", null,
+        React.createElement("input", { className: "input_name", placeholder: "Bitte Namen eingeben", value: this.props.person.name, autoFocus: true }, this.props.person.name),
+        React.createElement("input", { className: "input_phone", placeholder: "Bitte Telefonnummer eingeben", value: this.props.person.phone}, this.props.person.phone),
+        React.createElement("input", { className: "input_email", placeholder: "Bitte eine Emailadresse eingeben", value: this.props.person.email}, this.props.person.email),
+        React.createElement("input", { className: "input_address", placeholder: "Adresse eingeben", value: this.props.person.address }, this.props.person.address),
+        React.createElement("input", { className: "input_image", placeholder: "Bildadresse eingeben", value: this.props.person.image }, this.props.person.image),
+        React.createElement("button", { className: "cancelSave",  onClick: this.cancelSave.bind()}, "cancelSave"),
+        React.createElement("button", { className: "saveContact",  onClick: this.saveContact.bind(this, this.props.person.name)}, "saveContact"))));
     }
     // Wenn keine Kontakt gelöscht wurde, jedoch ein Kontakt gewählt worden ist, diese Daten anzeigen
     else
