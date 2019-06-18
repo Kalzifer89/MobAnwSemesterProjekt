@@ -9,7 +9,7 @@
 /////////////////////////////////////////////*/
 
 var contact_deleted = false;
-var contact_make_new = false;
+var contact_new = false;
 var contact_edit = false;
 
 class App extends React.Component {
@@ -69,8 +69,8 @@ class App extends React.Component {
           isActive: false 
         }
        ],
-        contact_deleted: false,
-        contact_make_new: false,
+        contact_to_edit: '',
+        contact_new: false,
         contact_edit: false,
      };
    }
@@ -101,20 +101,25 @@ class App extends React.Component {
       this.setState({ image: event.target.value });
     }
 
-     addKontakt(event) {
-       contact_edit = true;
-       this.setState({contact_deleted: contact_edit});
+     addKontakt() {
+      contact_new = true;
+       this.setState({contact_new: contact_new});
      }
 
-     saveKontakt(event) {
+     saveKontakt() {
+      contact_new = false;
       contact_edit = false;
       var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: this.state.image, isActive: this.state.isActive});
       this.setState({contacts: newContacts});
     }
 
-     editKontakt(event){
-      var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: this.state.image, isActive: this.state.isActive});
-     }
+     editKontakt(email){
+      contact_edit = true;
+      this.setState({contact_edit: contact_edit});
+      var choosenContact = this.state.contacts.filter(value => value.email == email);
+      //var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: this.state.image, isActive: this.state.isActive});
+      this.setState({contact_to_edit: choosenContact});
+    }
 
      delKontakt(email) {
       var newContacts = this.state.contacts.filter(value => value.email != email);
@@ -122,14 +127,16 @@ class App extends React.Component {
      }
 
      cancel(event){
-      contact_edit = false;
-      this.setState({contact_deleted: contact_edit});
+        contact_edit = false;
+        contact_new = false;
+        this.setState({contact_new: contact_new});
+        this.setState({contact_edit: contact_new});
      }
 
 
 //HTML Ausgeben um Formular Anzeigen
   render() {
-    if(contact_edit == true)
+    if(contact_new == true)
     {
       return (
         //Fragment Anzeigen um Abzugrenzen
@@ -153,6 +160,37 @@ class App extends React.Component {
       <button onClick={this.cancel.bind(this)}>Abbrechen</button>
       </React.Fragment>
       );
+    }
+    if(contact_edit == true)
+    {
+      //console.log(this.state.contacts.name);
+      console.log(this.state.contact_to_edit[0].name);
+
+      return (
+        //Fragment Anzeigen um Abzugrenzen
+      <React.Fragment>
+      <h2>Kontakt bearbeiten</h2>
+  
+      <label>Name: <input onChange={this.updateName.bind(this)} type="text" value={this.state.contact_to_edit[0].name}/></label>
+      {<br></br>}
+      
+      <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1" value={this.state.contact_to_edit[0].age}/></label>
+      {<br></br>}
+      <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text" value={this.state.contact_to_edit[0].phone}/></label>
+      {<br></br>}
+      <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"  value={this.state.contact_to_edit[0].email}/></label>
+      {<br></br>}
+      <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text" value={this.state.contact_to_edit[0].address}/></label>
+      {<br></br>}
+      <label>Bild: <input onChange={this.updateImage.bind(this)} type="text" value={this.state.contact_to_edit[0].image}/></label>
+      {<br></br>}
+
+      <button onClick={this.saveKontakt.bind(this)}>Speichern</button>
+      <button onClick={this.cancel.bind(this)}>Abbrechen</button>
+      </React.Fragment>
+      
+      );
+      
     }
     else
     {
@@ -182,7 +220,6 @@ class App extends React.Component {
               {<button onClick={this.delKontakt.bind(this, item.email)}>Kontakt löschen</button>}
             </li>);
         })}
-
       </ul>
       </React.Fragment>
       );
