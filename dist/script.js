@@ -159,14 +159,15 @@ var ContactInfo = React.createClass({ displayName: "ContactInfo",
           // Durch das bisherige Array gehen und den übergebenen Namen suchen
           for (let i = 0; i < contactsArray.length; i++) 
           {
-            // Wnn der name gefunden wurde den Index auslesen
+            // Wenn der name gefunden wurde den Index auslesen
             if (contactsArray[i].name == contactName) 
             {
               index = i;
               break;
             }
           }
-          contactsArray[index].name = input_name.value;
+          console.log("value of input field : "+this.state.inputfield);
+          contactsArray[index].name = this.state.inputfield;
           console.log('Kontakt erfolgreich bearbeitet');
           this.setState({contactsArray: contactsArray}); // State aktualisieren
       },
@@ -174,6 +175,10 @@ var ContactInfo = React.createClass({ displayName: "ContactInfo",
       cancelSave: function () {
         contact_edit = false;
         this.setState({contactsArray: contactsArray}); // State aktualisieren
+      },
+      updateInputValue: function (evt){
+        //console.log("input field updated with "+evt.target.value);
+        this.state={inputfield: evt.target.value};
       },
   render: function () {
     // Wenn ein Kontakt gelöscht wurde, einen Hinweis anzeigen
@@ -200,11 +205,11 @@ var ContactInfo = React.createClass({ displayName: "ContactInfo",
   
         // Unterer Bereich
         React.createElement("section", null,
-        React.createElement("input", { className: "input_name", placeholder: "Bitte Namen eingeben", value: this.props.person.name, autoFocus: true }, this.props.person.name),
-        React.createElement("input", { className: "input_phone", placeholder: "Bitte Telefonnummer eingeben", value: this.props.person.phone}, this.props.person.phone),
-        React.createElement("input", { className: "input_email", placeholder: "Bitte eine Emailadresse eingeben", value: this.props.person.email}, this.props.person.email),
-        React.createElement("input", { className: "input_address", placeholder: "Adresse eingeben", value: this.props.person.address }, this.props.person.address),
-        React.createElement("input", { className: "input_image", placeholder: "Bildadresse eingeben", value: this.props.person.image }, this.props.person.image),
+        React.createElement("input", { className: "input_name", placeholder: "Bitte Namen eingeben", value: this.props.person.name, autoFocus: true, onChange: this.updateInputValue.bind(this.props.person.name)}, this.props.person.name),
+        React.createElement("input", { className: "input_phone", placeholder: "Bitte Telefonnummer eingeben", value: this.props.person.phone, onChange: this.updateInputValue.bind(this)}, this.props.person.phone),
+        React.createElement("input", { className: "input_email", placeholder: "Bitte eine Emailadresse eingeben", value: this.props.person.email, onChange: this.updateInputValue.bind(this)}, this.props.person.email),
+        React.createElement("input", { className: "input_address", placeholder: "Adresse eingeben", value: this.props.person.address, onChange: this.updateInputValue.bind(this)}, this.props.person.address),
+        React.createElement("input", { className: "input_image", placeholder: "Bildadresse eingeben", value: this.props.person.image, onChange: this.updateInputValue.bind(this)}, this.props.person.image),
         React.createElement("button", { className: "cancelSave",  onClick: this.cancelSave.bind()}, "cancelSave"),
         React.createElement("button", { className: "saveContact",  onClick: this.saveContact.bind(this, this.props.person.name)}, "saveContact"))));
     }
