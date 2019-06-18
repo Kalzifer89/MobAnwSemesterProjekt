@@ -26,9 +26,9 @@ class App extends React.Component {
           email: 'snowwhite@ouatmail.com',
           address: '945 N. Storybrook Ln',
           image: 'http://www.starwarshelmets.com/2012/Sideshow_weathered3PO04.jpg',
-          isActive: true 
+          isActive: true
         },
-        
+
         {
           name: 'David Nolan',
           age: 22,
@@ -36,9 +36,9 @@ class App extends React.Component {
           email: 'princecharming@ouatmail.com',
           address: '945 N. Storybrook Ln',
           image: 'http://cdn.playbuzz.com/cdn/e6516fc7-27c5-4798-8097-3553691017a2/5cab9b6e-6a4c-4bda-90fe-c8af89826b03.jpg',
-          isActive: false 
+          isActive: false
         },
-        
+
         {
           name: 'Emma Swan',
           age: 34,
@@ -46,9 +46,9 @@ class App extends React.Component {
           email: 'thesavior@ouatmail.com',
           address: '693 N. Storybrook Ln',
           image: 'https://a.wattpad.com/cover/4106257-368-k161010.jpg',
-          isActive: false 
+          isActive: false
         },
-        
+
         {
           name: 'Regina Mills',
           age: 55,
@@ -56,9 +56,9 @@ class App extends React.Component {
           email: 'evilqueen@ouatmail.com',
           address: '1313 E. Mayor St',
           image: 'https://s-media-cache-ak0.pinimg.com/originals/11/d3/e9/11d3e91be6df715f88d543374c039e1d.jpg',
-          isActive: false 
+          isActive: false
         },
-        
+
         {
           name: 'Mr. Gold',
           age: 12,
@@ -66,16 +66,18 @@ class App extends React.Component {
           email: 'rumplestiltskin@ouatmail.com',
           address: '101 N. Main St',
           image: 'https://captainawkwarddotcom.files.wordpress.com/2014/02/darth-vader-original_0.jpg',
-          isActive: false 
+          isActive: false
         }
        ],
         contact_to_edit: '',
+        contact_to_show: '',
         contact_new: false,
         contact_edit: false,
+        contact_deleted: false
      };
    }
 
-   
+
      //Update Funktionen für die ezeinen Elemente erzeugen
      updateName(event) {
        this.setState({ name: event.target.value });
@@ -117,13 +119,20 @@ class App extends React.Component {
       contact_edit = true;
       this.setState({contact_edit: contact_edit});
       var choosenContact = this.state.contacts.filter(value => value.email == email);
-      //var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: this.state.image, isActive: this.state.isActive});
       this.setState({contact_to_edit: choosenContact});
     }
 
      delKontakt(email) {
+      contact_deleted = true;
+      this.setState({contact_deleted: contact_deleted});
       var newContacts = this.state.contacts.filter(value => value.email != email);
       this.setState({contacts: newContacts});
+     }
+
+     showKontakt(email) {
+      var choosenContact = this.state.contacts.filter(value => value.email == email);
+      //this.setState({ contacts: choosenContact });
+      this.setState({contact_to_show: choosenContact});
      }
 
      cancel(event){
@@ -142,7 +151,7 @@ class App extends React.Component {
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
       <h2>Neuen Kontakt erstellen</h2>
-  
+
       <label>Name: <input onChange={this.updateName.bind(this)} type="text"/></label>
       {<br></br>}
       <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1"/></label>
@@ -163,8 +172,9 @@ class App extends React.Component {
     }
     if(contact_edit == true)
     {
+      
       //console.log(this.state.contacts.name);
-      console.log(this.state.contact_to_edit[0].name);
+      //console.log(this.state.contact_to_edit[0].name);
 
       return (
         //Fragment Anzeigen um Abzugrenzen
@@ -174,15 +184,15 @@ class App extends React.Component {
       <label>Name: <input onChange={this.updateName.bind(this)} type="text" value={this.state.contact_to_edit[0].name}/></label>
       {<br></br>}
       
-      <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1" value={this.state.contact_to_edit[0].age}/></label>
+      <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1" value={this.state.contacts[0].age}/></label>
       {<br></br>}
-      <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text" value={this.state.contact_to_edit[0].phone}/></label>
+      <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text" value={this.state.contacts[0].phone}/></label>
       {<br></br>}
-      <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"  value={this.state.contact_to_edit[0].email}/></label>
+      <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"  value={this.state.contacts[0].email}/></label>
       {<br></br>}
-      <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text" value={this.state.contact_to_edit[0].address}/></label>
+      <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text" value={this.state.contacts[0].address}/></label>
       {<br></br>}
-      <label>Bild: <input onChange={this.updateImage.bind(this)} type="text" value={this.state.contact_to_edit[0].image}/></label>
+      <label>Bild: <input onChange={this.updateImage.bind(this)} type="text" value={this.state.contacts[0].image}/></label>
       {<br></br>}
 
       <button onClick={this.saveKontakt.bind(this)}>Speichern</button>
@@ -192,35 +202,105 @@ class App extends React.Component {
       );
       
     }
-    else
+    else if(contact_deleted == true)
     {
+      contact_deleted = false;
       return (
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
-      <h1>Kontakte</h1>
+      <div class="flex-container">
+        <div class="left">
+          <h1>Kontakte</h1>
 
-      <button onClick={this.addKontakt.bind(this)}>Kontakt hinzufügen</button>
-    
-      <h2>Alle Kontakte</h2>
-      <ul>
-        {this.state.contacts.map((item, index) => {
-          return (
-            <li key={index}>
-              {<img src={item.image}></img>}
-            {<br></br>}
-              {item.name}({item.age})
-            {<br></br>}
-              {item.phone}
-            {<br></br>}
-              {item.address}
-            {<br></br>}
-              {item.email}
-            {<br></br>}
-              {<button onClick={this.editKontakt.bind(this, item.email)}>Kontakt bearbeiten</button>}
-              {<button onClick={this.delKontakt.bind(this, item.email)}>Kontakt löschen</button>}
-            </li>);
-        })}
-      </ul>
+          <button onClick={this.addKontakt.bind(this)}>Kontakt hinzufügen</button>
+
+          <h2>Alle Kontakte</h2>
+            <ul>
+              {this.state.contacts.map((item, index) => {
+                return (
+                  <div onClick={this.showKontakt.bind(this, item.email)}>
+                  <li key={index} class="contact">
+                  <table>
+                    <tr>
+                    <td>{<img src={item.image} class="contactpicture"></img>}</td>
+                  <td class="adress">{<br></br>}
+                    {item.name}({item.age})
+                  {<br></br>}
+                    {item.phone}
+                  {<br></br>}
+                    {item.address}
+                  {<br></br>}
+                    {item.email}
+                  {<br></br>}</td>
+                  <td>
+                    {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
+                    {<button onClick={this.delKontakt.bind(this, item.email)} class="button" ><img src="./img/rubbish-bin.png" /></button>}
+                    </td>
+                    </tr>
+                    </table>
+                  </li></div>);
+              })}
+            </ul>
+          </div>
+          <div class="right">
+              <h2>Kontakt erfolgreich gelöscht</h2>;
+          </div>
+      </div>
+      </React.Fragment>
+      );
+      
+    }
+    else
+    {
+      //console.log(this.state.contact_to_show[0]);
+      
+      return (
+        //Fragment Anzeigen um Abzugrenzen
+      <React.Fragment>
+      <div class="flex-container">
+        <div class="left">
+          <h1>Kontakte</h1>
+
+          <button onClick={this.addKontakt.bind(this)}>Kontakt hinzufügen</button>
+
+          <h2>Alle Kontakte</h2>
+            <ul>
+              {this.state.contacts.map((item, index) => {
+                return (
+                  <div onClick={this.showKontakt.bind(this, item.email)}>
+                  <li key={index} class="contact">
+                  <table>
+                    <tr>
+                    <td>{<img src={item.image} class="contactpicture"></img>}</td>
+                  <td class="adress">{<br></br>}
+                    {item.name}({item.age})
+                  {<br></br>}
+                    {item.phone}
+                  {<br></br>}
+                    {item.address}
+                  {<br></br>}
+                    {item.email}
+                  {<br></br>}</td>
+                  <td>
+                    {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
+                    {<button onClick={this.delKontakt.bind(this, item.email)} class="button" ><img src="./img/rubbish-bin.png" /></button>}
+                    </td>
+                    </tr>
+                    </table>
+                  </li></div>);
+              })}
+            </ul>
+          </div>
+          <div class="right">
+              <h2>Kontakt</h2>
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <img class="contact_image" src={this.state.contact_to_show[0].image}></img> : <img class="contact_image" src={this.state.contacts[0].image}></img>}
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div>Name: {this.state.contact_to_show[0].name}</div> : <div>Name: {this.state.contacts[0].name}</div>}
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div>Alter: {this.state.contact_to_show[0].age}</div> : <div>Alter: {this.state.contacts[0].age}</div>}
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div>Telefon: {this.state.contact_to_show[0].phone}</div> : <div>Telefon: {this.state.contacts[0].phone}</div>}
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div>Email: {this.state.contact_to_show[0].email}</div> : <div>Email: {this.state.contacts[0].email}</div>}
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div>Adresse: {this.state.contact_to_show[0].address}</div> : <div>Adresse: {this.state.contacts[0].address}</div>}
+          </div>
+      </div>
       </React.Fragment>
       );
     }
@@ -320,10 +400,10 @@ var ContactList = React.createClass({ displayName: "ContactList",
     contact_edit = false;
     let index;
     // Durch das bisherige Array gehen und den übergebenen Namen suchen
-    for (let i = 0; i < contactsArray.length; i++) 
+    for (let i = 0; i < contactsArray.length; i++)
     {
       // Wnn der name gefunden wurde den Index auslesen
-      if (contactsArray[i].name == contactName) 
+      if (contactsArray[i].name == contactName)
       {
         index = i;
         break;
@@ -336,14 +416,14 @@ var ContactList = React.createClass({ displayName: "ContactList",
     contactsArray[0].isActive = true;
     //this.setState({ person: contactsArray[0] });
     //this.setState({contactsArray: contactsArray});  // State aktualisieren
-    
+
     console.log('Kontakt gelöscht');
     //console.log({ person: contactsArray[0] });
     contact_deleted = true;
   },
-  
+
  // ----------------------------------------------------------------- Elemente darstellen
-  render: function () 
+  render: function ()
   {
     return (
       React.createElement("div", { className: "app" },
@@ -374,23 +454,23 @@ var ContactList = React.createClass({ displayName: "ContactList",
       React.createElement("div", { className: "right" },
       // Kontaktinformationen darstellen
       React.createElement(ContactInfo, { person: this.state.person }))));
-  } 
+  }
 });
 
-  
+
 // ===================================================================================================== Kontaktinfo anzeigen (rechts)
 var ContactInfo = React.createClass({ displayName: "ContactInfo",
       // ----------------------------------------------------------------- Funktion: Kontakt speichern
       saveContact: function (contactName) {
 
         contact_edit = false;
-    
+
           let index;
           // Durch das bisherige Array gehen und den übergebenen Namen suchen
-          for (let i = 0; i < contactsArray.length; i++) 
+          for (let i = 0; i < contactsArray.length; i++)
           {
             // Wenn der name gefunden wurde den Index auslesen
-            if (contactsArray[i].name == contactName) 
+            if (contactsArray[i].name == contactName)
             {
               index = i;
               break;
@@ -419,7 +499,7 @@ var ContactInfo = React.createClass({ displayName: "ContactInfo",
       contact_deleted = false;
       var styles = {
         backgroundImage: 'url(' + this.props.person.image + ')' };
-  
+
       return (
         // Bestätigung für das Löschen
         React.createElement("h2", null, "Kontakt gelöscht "));
@@ -428,13 +508,13 @@ var ContactInfo = React.createClass({ displayName: "ContactInfo",
     {
       var styles = {
         backgroundImage: 'url(' + this.props.person.image + ')' };
-  
+
       return (
         // Oberer Bereich
         React.createElement("div", { className: "contact-info" },
         React.createElement("header", null, "Bearbeiten aktiv",
         React.createElement("div", { className: "image", style: styles })),
-  
+
         // Unterer Bereich
         React.createElement("section", null,
         React.createElement("input", { className: "input_name", placeholder: "Bitte Namen eingeben", value: this.props.person.name, autoFocus: true, onChange: this.updateName.bind(this)}, this.props.person.name),
@@ -450,14 +530,14 @@ var ContactInfo = React.createClass({ displayName: "ContactInfo",
     {
       var styles = {
         backgroundImage: 'url(' + this.props.person.image + ')' };
-  
+
       return (
         // Oberer Bereich
         React.createElement("div", { className: "contact-info" },
         React.createElement("header", null,
         React.createElement("div", { className: "image", style: styles }),
         React.createElement("h3", { className: "name" }, this.props.person.name)),
-  
+
         // Unterer Bereich
         React.createElement("section", null,
         React.createElement("p", { className: "phone" }, "Phone: ", this.props.person.phone),
