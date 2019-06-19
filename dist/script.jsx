@@ -261,18 +261,18 @@ class App extends React.Component {
         <div class="right">
           <h2>Kontakt bearbeiten</h2>
 
-          <label>Name: <input onChange={this.updateName.bind(this)} type="text" value={this.state.contact_to_edit[0].name}/></label>
+          <label>Name: <input onChange={this.updateName.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].name}/></label>
           {<br></br>}
 
-          <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1" value={this.state.contacts[0].age}/></label>
+          <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1" defaultValue={this.state.contacts[0].age}/></label>
           {<br></br>}
-          <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text" value={this.state.contacts[0].phone}/></label>
+          <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text" defaultValue={this.state.contacts[0].phone}/></label>
           {<br></br>}
-          <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"  value={this.state.contacts[0].email}/></label>
+          <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"  defaultValue={this.state.contacts[0].email}/></label>
           {<br></br>}
-          <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text" value={this.state.contacts[0].address}/></label>
+          <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text" defaultValue={this.state.contacts[0].address}/></label>
           {<br></br>}
-          <label>Bild: <input onChange={this.updateImage.bind(this)} type="text" value={this.state.contacts[0].image}/></label>
+          <label>Bild: <input onChange={this.updateImage.bind(this)} type="text" defaultValue={this.state.contacts[0].image}/></label>
           {<br></br>}
 
           <button onClick={this.saveKontakt.bind(this)}>Speichern</button>
