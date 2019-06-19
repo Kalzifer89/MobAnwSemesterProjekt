@@ -118,10 +118,14 @@ class App extends React.Component {
        this.setState({contact_new: contact_new});
      }
 
-     saveKontakt() {
+     saveKontakt(email) {
       contact_new = false;
       contact_edit = false;
+      
       var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: this.state.image, isActive: this.state.isActive});
+      
+      this.state.contacts[this.state.contacts.findIndex(value => value.email === email)].name = "Test";
+      
       this.setState({contacts: newContacts});
     }
 
@@ -264,18 +268,18 @@ class App extends React.Component {
           <label>Name: <input onChange={this.updateName.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].name}/></label>
           {<br></br>}
 
-          <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1" defaultValue={this.state.contacts[0].age}/></label>
+          <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1" defaultValue={this.state.contact_to_edit[0].age}/></label>
           {<br></br>}
-          <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text" defaultValue={this.state.contacts[0].phone}/></label>
+          <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].phone}/></label>
           {<br></br>}
-          <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"  defaultValue={this.state.contacts[0].email}/></label>
+          <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"  defaultValue={this.state.contact_to_edit[0].email}/></label>
           {<br></br>}
-          <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text" defaultValue={this.state.contacts[0].address}/></label>
+          <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].address}/></label>
           {<br></br>}
-          <label>Bild: <input onChange={this.updateImage.bind(this)} type="text" defaultValue={this.state.contacts[0].image}/></label>
+          <label>Bild: <input onChange={this.updateImage.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].image}/></label>
           {<br></br>}
 
-          <button onClick={this.saveKontakt.bind(this)}>Speichern</button>
+          <button onClick={this.saveKontakt.bind(this, this.state.contact_to_edit[0].email)}>Speichern</button>
           <button onClick={this.cancel.bind(this)}>Abbrechen</button>
           </div>
       </div>
