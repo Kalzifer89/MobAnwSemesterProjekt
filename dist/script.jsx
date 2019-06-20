@@ -88,7 +88,29 @@ class App extends React.Component {
           address: 'Tatooine',
           image: 'https://captainawkwarddotcom.files.wordpress.com/2014/02/darth-vader-original_0.jpg',
           isActive: false
+        },
+
+        {
+          name: 'Sven Möller',
+          age: '33',
+          phone: '01514 1902178',
+          email: 'sv3n.moeller@gmail.com',
+          address: 'Ellerbek',
+          image: 'https://link.iue.fh-kiel.de/wp-content/uploads/2017/11/Hiwis-7-550x400.jpg',
+          isActive: false
+        },
+
+        {
+          name: 'Sven Krumbeck',
+          age: '29',
+          phone: '0162 2005938',
+          email: 'sven.krumbeck@gmail.com',
+          address: 'Ravensberg',
+          image: 'https://www.piratenfraktion-sh.de/wp-content/uploads/2012/05/sven_krumbeck_piratensh_testcbartjez.com_dsc6991-1.jpg',
+          isActive: false
         }
+
+
        ],
         contact_to_edit: '',
         contact_to_show: '',
@@ -157,12 +179,37 @@ class App extends React.Component {
     {
       // Status des aktuellen Bearbeitungsmodus zurücksetzen
       contact_new = false;
-      //contact_edit = false;
 
-      var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: this.state.image, isActive: this.state.isActive});
+      // Mailadresse für spätere Verarbeitung als String speichern
+      var mailaddress = document.getElementById("txt_email").value.toString();
 
-      //Kontaktliste erneuern und über Änderungen benachrichtigen
-      this.setState({contacts: newContacts});
+      // Handling der Fehlernachrichten, prüfen, ob jeweils ein Inhalt in den Textfeldern steht
+      if(document.getElementById("txt_name").value === '' || document.getElementById("txt_name").value === ' ')
+        errormessage("Bitte einen Namen eingeben");
+      else if(document.getElementById("txt_age").value === '' || document.getElementById("txt_age").value === ' ')
+        errormessage("Bitte ein Alter angeben");
+      else if(document.getElementById("txt_phone").value === '' || document.getElementById("txt_phone").value === ' ')
+        errormessage("Bitte eine Telefonnummer angeben");
+      else if(document.getElementById("txt_email").value === '' || document.getElementById("txt_email").value === ' ')
+        errormessage("Bitte die Emailadresse eingeben");
+      else if (mailaddress.search("@") === -1 || mailaddress.search(".") === -1) // Nachsehen ob eine potenziell korrekte Mailadresse eingegeben wurde
+        errormessage("Bitte eine Korrekte Mailadresse eingeben");
+      else if(document.getElementById("txt_address").value === '' || document.getElementById("txt_address").value === ' ')
+        errormessage("Bitte einen Adresse eingeben");
+      else
+      {
+        // Prüfen ob eine Bildadresse angegeben worden ist, wenn nicht, nutze ein Platzhalter-Bild
+        if (document.getElementById("txt_image").value === '' || document.getElementById("txt_image").value === ' ' || document.getElementById("txt_image").length < 1 )
+          var contactimage = 'https://www.firstvolunteerinsurance.com/wp-content/uploads/2018/01/Employee-Placeholder-Image.jpg';
+        else
+          var contactimage = this.state.image;
+
+
+          var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: contactimage, isActive: this.state.isActive});
+
+          //Kontaktliste erneuern und über Änderungen benachrichtigen
+          this.setState({contacts: newContacts});
+      }
     }
 
 
@@ -304,22 +351,17 @@ class App extends React.Component {
         <h1>Kontakte</h1>
 
         <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
-
-          <ul>
             {this.state.contacts.map((item, index) => {
               return (
                 <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact">
                 <table>
                   <tr>
                   <td>{<img src={item.image} class="contactpicture"></img>}</td>
-                <td class="adress">{<br></br>}
-                  {item.name}({item.age})
+                <td class="adress">
+                  <span class="contactName">{item.name}({item.age})</span>
                 {<br></br>}
-                  {item.phone}
-                {<br></br>}
-                  {item.address}
-                {<br></br>}
-                  {item.email}
+                  <span class="contactInfo">
+                  {item.email}</span>
                 {<br></br>}</td>
                 <td>
                   {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
@@ -329,8 +371,7 @@ class App extends React.Component {
                   </table>
                 </div>);
             })}
-          </ul>
-        </div>
+          </div>
           <div class="right">
             <h2>Neuen Kontakt erstellen</h2>
 
@@ -372,22 +413,17 @@ class App extends React.Component {
         <h1>Kontakte</h1>
 
         <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
-
-          <ul>
             {this.state.contacts.map((item, index) => {
               return (
                 <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact">
                 <table>
                   <tr>
                   <td>{<img src={item.image} class="contactpicture"></img>}</td>
-                <td class="adress">{<br></br>}
-                  {item.name}({item.age})
+                <td class="adress">
+                  <span class="contactName">{item.name}({item.age})</span>
                 {<br></br>}
-                  {item.phone}
-                {<br></br>}
-                  {item.address}
-                {<br></br>}
-                  {item.email}
+                  <span class="contactInfo">
+                  {item.email}</span>
                 {<br></br>}</td>
                 <td>
                   {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
@@ -397,8 +433,7 @@ class App extends React.Component {
                   </table>
                 </div>);
             })}
-          </ul>
-        </div>
+          </div>
         <div class="right">
           <h2>Kontakt bearbeiten</h2>
 
@@ -436,37 +471,30 @@ class App extends React.Component {
         <h1>Star Wars Kontaktverwaltung</h1>
       </div>
       <div class="flex-container">
-        <div class="left">
-          <h1>Kontakte</h1>
+      <div class="left">
+        <h1>Kontakte</h1>
 
-          <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
-
-            <ul>
-              {this.state.contacts.map((item, index) => {
-                return (
-                  <div onClick={this.showKontakt.bind(this, item.email)}>
-                  <li  class="contact">
-                  <table>
-                    <tr>
-                    <td>{<img src={item.image} class="contactpicture"></img>}</td>
-                  <td class="adress">{<br></br>}
-                    {item.name}({item.age})
-                  {<br></br>}
-                    {item.phone}
-                  {<br></br>}
-                    {item.address}
-                  {<br></br>}
-                    {item.email}
-                  {<br></br>}</td>
-                  <td>
-                    {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
-                    {<button onClick={this.delKontakt.bind(this, item.email)} class="button" ><img src="./img/rubbish-bin.png" /></button>}
-                    </td>
-                    </tr>
-                    </table>
-                  </li></div>);
-              })}
-            </ul>
+        <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
+            {this.state.contacts.map((item, index) => {
+              return (
+                <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact">
+                <table>
+                  <tr>
+                  <td>{<img src={item.image} class="contactpicture"></img>}</td>
+                <td class="adress">
+                  <span class="contactName">{item.name}({item.age})</span>
+                {<br></br>}
+                  <span class="contactInfo">
+                  {item.email}</span>
+                {<br></br>}</td>
+                <td>
+                  {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
+                  {<button onClick={this.delKontakt.bind(this, item.email)} class="button" ><img src="./img/rubbish-bin.png" /></button>}
+                  </td>
+                  </tr>
+                  </table>
+                </div>);
+            })}
           </div>
           <div class="right">
               <h2>Kontakt erfolgreich gelöscht</h2>
@@ -492,22 +520,17 @@ class App extends React.Component {
           <h1>Kontakte</h1>
 
           <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
-
-            <ul>
               {this.state.contacts.map((item, index) => {
                 return (
                   <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact">
                   <table>
                     <tr>
                     <td>{<img src={item.image} class="contactpicture"></img>}</td>
-                  <td class="adress">{<br></br>}
-                    {item.name}({item.age})
+                  <td class="adress">
+                    <span class="contactName">{item.name}({item.age})</span>
                   {<br></br>}
-                    {item.phone}
-                  {<br></br>}
-                    {item.address}
-                  {<br></br>}
-                    {item.email}
+                    <span class="contactInfo">
+                    {item.email}</span>
                   {<br></br>}</td>
                   <td>
                     {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
@@ -517,15 +540,16 @@ class App extends React.Component {
                     </table>
                   </div>);
               })}
-            </ul>
           </div>
           <div class="right">
               <div class="mittig">{Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <img class="contactpicture_right" src={this.state.contact_to_show[0].image}></img> : <img class="contactpicture_right" src={this.state.contacts[0].image}></img>}</div>
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><h2>{this.state.contact_to_show[0].name}</h2></div> : <div><h2>{this.state.contacts[0].name}</h2></div>}
-              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><u>Alter:</u><br /> {this.state.contact_to_show[0].age}</div> : <div><u>Alter:</u><br /> {this.state.contacts[0].age}</div>}
-              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><u>Telefon:</u><br /> {this.state.contact_to_show[0].phone}</div> : <div><u>Telefon:</u><br /> {this.state.contacts[0].phone}</div>}
-              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><u>Email:</u><br /> {this.state.contact_to_show[0].email}</div> : <div><u>Email:</u><br /> {this.state.contacts[0].email}</div>}
-              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><u>Adresse:</u><br /> {this.state.contact_to_show[0].address}</div> : <div><u>Adresse:</u><br /> {this.state.contacts[0].address}</div>}
+              <hr />
+              <div>Kontaktinformtionen</div>
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><img src="./img/circular-line-with-word-age-in-the-center.png" class="icon"></img> {this.state.contact_to_show[0].age}</div> : <div><img src="./img/circular-line-with-word-age-in-the-center.png" class="icon"></img> {this.state.contacts[0].age}</div>}
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><img src="./img/phone-receiver.png" class="icon"></img> {this.state.contact_to_show[0].phone}</div> : <div><img src="./img/phone-receiver.png" class="icon"></img>  {this.state.contacts[0].phone}</div>}
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><img src="./img/close-envelope.png" class="icon"></img> {this.state.contact_to_show[0].email}</div> : <div><img src="./img/close-envelope.png" class="icon"></img> {this.state.contacts[0].email}</div>}
+              {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><img src="./img/address.png" class="icon"></img> {this.state.contact_to_show[0].address}</div> : <div><img src="./img/address.png" class="icon"></img> {this.state.contacts[0].address}</div>}
           </div>
       </div>
       </React.Fragment>
