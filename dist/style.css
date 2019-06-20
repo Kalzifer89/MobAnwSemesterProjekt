@@ -66,14 +66,10 @@ table {
 }
 
 input {
-  background-color:#89c9ed;;
+  background-color:#0a2e46;
   border:1px solid #42ade1;
   float: right;
-  color: white;
-}
-
-button {
-
+  color: #89c9ed;
 }
 
 hr {
@@ -136,21 +132,20 @@ hr {
 }
 
 .header {
+  margin-bottom: 20px;
   color: #fef747;
   font-family: 'starjedi';
+  text-align: center;
 }
 
 .contact {
   width: 100%;
-
+ 
   background: #020e1a; /* Old browsers */
   background: -moz-linear-gradient(top, #020e1a 0%, #0a2e46 49%, #020e1a 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(top, #020e1a 0%,#0a2e46 49%,#020e1a 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to bottom, #020e1a 0%,#0a2e46 49%,#020e1a 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#020e1a', endColorstr='#020e1a',GradientType=0 ); /* IE6-9 */
-
-
-
 }
 
 .contactName {
@@ -186,7 +181,26 @@ hr {
   background: -webkit-linear-gradient(top, #f1e767 0%,#feb645 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to bottom, #f1e767 0%,#feb645 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1e767', endColorstr='#feb645',GradientType=0 ); /* IE6-9 */
+}
 
+.buttonCancel {
+  width: 50%;
+  height: 50px;
+  background: #f1e767; /* Old browsers */
+  background: -moz-linear-gradient(top, #f1e767 0%, #feb645 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #f1e767 0%,#feb645 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #f1e767 0%,#feb645 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1e767', endColorstr='#feb645',GradientType=0 ); /* IE6-9 */
+}
+
+.buttonSave {
+  width: 50%;
+  height: 50px;
+  background: #f1e767; /* Old browsers */
+  background: -moz-linear-gradient(top, #f1e767 0%, #feb645 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #f1e767 0%,#feb645 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #f1e767 0%,#feb645 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1e767', endColorstr='#feb645',GradientType=0 ); /* IE6-9 */
 }
 
 .newContact:active {
@@ -211,4 +225,10 @@ button img {
   background-position: -10px 0;
   background-size: cover;
   align: center;
+}
+
+.headerimage {
+  width: 550px;
+  align: center;
+
 }

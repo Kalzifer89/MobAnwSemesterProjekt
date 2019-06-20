@@ -9,12 +9,14 @@
 /////////////////////////////////////////////*/
 
 //Status für den aktuellen Bearbeitungsmodus
-var contact_deleted = false;
+
 var contact_new = false;
 var contact_edit = false;
+var contact_deleted = false;
+
 
 // Globale Funktion für die Warnhinweise
-function errormessage(message)
+function message(message)
 {
   alert(message);
 }
@@ -27,11 +29,11 @@ class App extends React.Component {
   {
      super(props);
 
-    //  Array mit Objekten als beispiele füllen
+     // ============================================================================================== Beispiel-Array mit Objekten 
      this.state = {
        contacts: [
         {
-          name: '3PO, Goldenrod',
+          name: 'C3PO, Goldenrod',
           age: 45,
           phone: '1234-5678',
           email: 'c3po@rebelalliance.com',
@@ -93,10 +95,10 @@ class App extends React.Component {
         {
           name: 'Sven Möller',
           age: '33',
-          phone: '01514 1902178',
+          phone: '0151 41902178',
           email: 'sv3n.moeller@gmail.com',
-          address: 'Ellerbek',
-          image: 'https://link.iue.fh-kiel.de/wp-content/uploads/2017/11/Hiwis-7-550x400.jpg',
+          address: 'Wellingdorf',
+          image: './img/avatar/avatar_sven.jpg',
           isActive: false
         },
 
@@ -132,6 +134,7 @@ class App extends React.Component {
     this.setState({ image: document.getElementById("txt_image").value });
    }*/
 
+    // ============================================================================================== StateController für die Überwachung der Eingabfelder
     updateName(event)
     {
       this.setState({ name: event.target.value });
@@ -174,132 +177,145 @@ class App extends React.Component {
       this.setState({contact_new: contact_new});
     }
 
-
+    // ============================================================================================== StateController - Neuen Kontakt speichern
     saveNewKontakt()
     {
-      // Status des aktuellen Bearbeitungsmodus zurücksetzen
-      contact_new = false;
-
       // Mailadresse für spätere Verarbeitung als String speichern
       var mailaddress = document.getElementById("txt_email").value.toString();
 
       // Handling der Fehlernachrichten, prüfen, ob jeweils ein Inhalt in den Textfeldern steht
       if(document.getElementById("txt_name").value === '' || document.getElementById("txt_name").value === ' ')
-        errormessage("Bitte einen Namen eingeben");
+      {
+        message("Bitte einen Namen eingeben");
+        return;
+      }
       else if(document.getElementById("txt_age").value === '' || document.getElementById("txt_age").value === ' ')
-        errormessage("Bitte ein Alter angeben");
+      {
+        message("Bitte ein Alter angeben");
+        return;
+      }
       else if(document.getElementById("txt_phone").value === '' || document.getElementById("txt_phone").value === ' ')
-        errormessage("Bitte eine Telefonnummer angeben");
+      {
+        message("Bitte eine Telefonnummer angeben");
+        return;
+      }
       else if(document.getElementById("txt_email").value === '' || document.getElementById("txt_email").value === ' ')
-        errormessage("Bitte die Emailadresse eingeben");
+      {
+        message("Bitte die Emailadresse eingeben");
+        return;
+      }
       else if (mailaddress.search("@") === -1 || mailaddress.search(".") === -1) // Nachsehen ob eine potenziell korrekte Mailadresse eingegeben wurde
-        errormessage("Bitte eine Korrekte Mailadresse eingeben");
+      {
+        message("Bitte eine Korrekte Mailadresse eingeben");
+        return;
+      }
       else if(document.getElementById("txt_address").value === '' || document.getElementById("txt_address").value === ' ')
-        errormessage("Bitte einen Adresse eingeben");
+      {
+        message("Bitte einen Adresse eingeben");
+        return;
+      }
       else
       {
         // Prüfen ob eine Bildadresse angegeben worden ist, wenn nicht, nutze ein Platzhalter-Bild
         if (document.getElementById("txt_image").value === '' || document.getElementById("txt_image").value === ' ' || document.getElementById("txt_image").length < 1 )
+        {
           var contactimage = 'https://www.firstvolunteerinsurance.com/wp-content/uploads/2018/01/Employee-Placeholder-Image.jpg';
+        }
         else
+        {
           var contactimage = this.state.image;
-
+        }
 
           var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: contactimage, isActive: this.state.isActive});
 
           //Kontaktliste erneuern und über Änderungen benachrichtigen
           this.setState({contacts: newContacts});
+          contact_new = false;
+          message("Neuer Kontakt "+ this.state.name + " erfolgreich erstellt");
       }
     }
 
-
+    // ============================================================================================== StateController - Kontakt bearbeiten
     saveKontakt(email)
     {
-      // Status des aktuellen Bearbeitunsmodus zurücksetzen
-      //contact_new = false;
-      contact_edit = false;
+      // Mailadresse für spätere Verarbeitung als String speichern
+      var mailaddress = document.getElementById("txt_email").value.toString();
 
-      // Die ID des aktuell gewählten Kontakts suchen
-      var contact_to_save_id = this.state.contacts.findIndex(value => value.email === email);
-      // Den aktuell zum Bearbeiten ausgewählten Kontakt in einer variable speichern
-      var contact_to_save = this.state.contacts[contact_to_save_id];
+      // Handling der Fehlernachrichten: Prüfen, ob jeweils ein Inhalt in den Textfeldern steht
+      if(document.getElementById("txt_name").value === '' || document.getElementById("txt_name").value === ' ')
+      {
+        message("Bitte einen Namen eingeben");
+        return;
+      }
+      else if(document.getElementById("txt_age").value === '' || document.getElementById("txt_age").value === ' ')
+      {
+        message("Bitte ein Alter angeben");
+        return;
+      }
+      else if(document.getElementById("txt_phone").value === '' || document.getElementById("txt_phone").value === ' ')
+      {
+        message("Bitte eine Telefonnummer angeben");
+        return;
+      }
+      else if(document.getElementById("txt_email").value === '' || document.getElementById("txt_email").value === ' ')
+      {
+        message("Bitte die Emailadresse eingeben");
+        return;
+      }
+      else if (mailaddress.search("@") === -1 || mailaddress.search(".") === -1) // Nachsehen ob eine potenziell korrekte Mailadresse eingegeben wurde
+      {
+        message("Bitte eine Korrekte Mailadresse eingeben");
+        return;
+      }
+      else if(document.getElementById("txt_address").value === '' || document.getElementById("txt_address").value === ' ')
+      {
+        message("Bitte einen Adresse eingeben");
+        return;
+      }
+      else
+      {
+        // Prüfen ob eine Bildadresse angegeben worden ist, wenn nicht, nutze ein Platzhalter-Bild
+        if (document.getElementById("txt_image").value === '' || document.getElementById("txt_image").value === ' ' || document.getElementById("txt_image").length < 1 )
+        {
+          var contactimage = 'https://www.firstvolunteerinsurance.com/wp-content/uploads/2018/01/Employee-Placeholder-Image.jpg';
+        }
+        else
+        {
+          var contactimage = document.getElementById("txt_image").value;
+        }
 
-      // Die einzelnen Einabefelder auslesen und in das Objekt im Kontaktarray speichern
-      contact_to_save.name = document.getElementById("txt_name").value;
-      contact_to_save.age = document.getElementById("txt_age").value;
-      contact_to_save.phone = document.getElementById("txt_phone").value;
-      contact_to_save.email = document.getElementById("txt_email").value;
-      contact_to_save.address = document.getElementById("txt_address").value;
-      contact_to_save.image = document.getElementById("txt_image").value;
+        // Die ID des aktuell gewählten Kontakts suchen
+        var contact_to_save_id = this.state.contacts.findIndex(value => value.email === email);
+        // Den aktuell zum Bearbeiten ausgewählten Kontakt in einer variable speichern
+        var contact_to_save = this.state.contacts[contact_to_save_id];
 
-      // Die aktualisierten Daten dem ausgewählten Objekt zuweisen
-      const contact_to_update = Object.assign({}, this.state.contacts[contact_to_save_id]);
+        // Die einzelnen Einabefelder auslesen und in das Objekt im Kontaktarray speichern
+        contact_to_save.name = document.getElementById("txt_name").value;
+        contact_to_save.age = document.getElementById("txt_age").value;
+        contact_to_save.phone = document.getElementById("txt_phone").value;
+        contact_to_save.email = document.getElementById("txt_email").value;
+        contact_to_save.address = document.getElementById("txt_address").value;
+        contact_to_save.image = contactimage;
 
-      // Nur in dem ausgewählten Kontakt die Daten aktualisieren
-      this.setState({contacts:[
-        this.state.contacts.slice(0, contact_to_save_id),
-        contact_to_update,
-        this.state.contacts.slice(contact_to_save_id + 1)
-      ]});
+        // Die aktualisierten Daten dem ausgewählten Objekt zuweisen
+        const contact_to_update = Object.assign({}, this.state.contacts[contact_to_save_id]);
 
-      // Die Kontaktliste aktualisieren
-      this.setState({contacts: this.state.contacts});
+        // Nur in dem ausgewählten Kontakt die Daten aktualisieren
+        this.setState({contacts:[
+          this.state.contacts.slice(0, contact_to_save_id),
+          contact_to_update,
+          this.state.contacts.slice(contact_to_save_id + 1)
+        ]});
 
-            // Mailadresse für spätere Verarbeitung als String speichern
-            var mailaddress = document.getElementById("txt_email").value.toString();
-
-            // Handling der Fehlernachrichten, prüfen, ob jeweils ein Inhalt in den Textfeldern steht
-            if(document.getElementById("txt_name").value === '' || document.getElementById("txt_name").value === ' ')
-              errormessage("Bitte einen Namen eingeben");
-            else if(document.getElementById("txt_age").value === '' || document.getElementById("txt_age").value === ' ')
-              errormessage("Bitte ein Alter angeben");
-            else if(document.getElementById("txt_phone").value === '' || document.getElementById("txt_phone").value === ' ')
-              errormessage("Bitte eine Telefonnummer angeben");
-            else if(document.getElementById("txt_email").value === '' || document.getElementById("txt_email").value === ' ')
-              errormessage("Bitte die Emailadresse eingeben");
-            else if (mailaddress.search("@") === -1 || mailaddress.search(".") === -1) // Nachsehen ob eine potenziell korrekte Mailadresse eingegeben wurde
-              errormessage("Bitte eine Korrekte Mailadresse eingeben");
-            else if(document.getElementById("txt_address").value === '' || document.getElementById("txt_address").value === ' ')
-              errormessage("Bitte einen Adresse eingeben");
-            else
-            {
-                    // Status des aktuellen Bearbeitungsmodus zurücksetzen
-      contact_edit = false;
-              // Prüfen ob eine Bildadresse angegeben worden ist, wenn nicht, nutze ein Platzhalter-Bild
-              if (document.getElementById("txt_image").value === '' || document.getElementById("txt_image").value === ' ' || document.getElementById("txt_image").length < 1 )
-                var contactimage = 'https://www.firstvolunteerinsurance.com/wp-content/uploads/2018/01/Employee-Placeholder-Image.jpg';
-              else
-                var contactimage = this.state.image;
-
-              // Die ID des aktuell gewählten Kontakts suchen
-              var contact_to_save_id = this.state.contacts.findIndex(value => value.email === email);
-              // Den aktuell zum Bearbeiten ausgewählten Kontakt in einer variable speichern
-              var contact_to_save = this.state.contacts[contact_to_save_id];
-
-              // Die einzelnen Einabefelder auslesen und in das Objekt im Kontaktarray speichern
-              contact_to_save.name = document.getElementById("txt_name").value;
-              contact_to_save.age = document.getElementById("txt_age").value;
-              contact_to_save.phone = document.getElementById("txt_phone").value;
-              contact_to_save.email = document.getElementById("txt_email").value;
-              contact_to_save.address = document.getElementById("txt_address").value;
-              contact_to_save.image = document.getElementById("txt_image").value;
-
-              // Die aktualisierten Daten dem ausgewählten Objekt zuweisen
-              const contact_to_update = Object.assign({}, this.state.contacts[contact_to_save_id]);
-
-              // Nur in dem ausgewählten Kontakt die Daten aktualisieren
-              this.setState({contacts:[
-                this.state.contacts.slice(0, contact_to_save_id),
-                contact_to_update,
-                this.state.contacts.slice(contact_to_save_id + 1)
-              ]});
-
-              // Die Kontaktliste aktualisieren
-              this.setState({contacts: this.state.contacts});
+        // Die Kontaktliste aktualisieren
+        this.setState({contacts: this.state.contacts});
+        contact_edit = false;
+        message("Kontakt erfolgreich bearbeitet");
       }
     }
 
 
+    // ============================================================================================== StateController - Button: Kontakt bearbeiten
     editKontakt(email)
     {
       contact_edit = true;
@@ -309,24 +325,27 @@ class App extends React.Component {
     }
 
 
+    // ============================================================================================== StateController - Button: Kontakt löschen
     delKontakt(email)
     {
-    contact_deleted = true;
-    this.setState({contact_deleted: contact_deleted});
-    var newContacts = this.state.contacts.filter(value => value.email != email);
-    this.setState({contacts: newContacts});
+      var contacts_not_to_delete = this.state.contacts.filter(value => value.email != email);
+      var contact_to_delete = this.state.contacts.filter(value => value.email === email);
+      message(contact_to_delete[0].name + " wurde erfolgreich gelöscht.")
+      this.setState({contacts: contacts_not_to_delete});
+      contact_deleted = true;
     }
 
 
+    // ============================================================================================== StateController - Button: Ausgewählten Kontakt anzeigen
     showKontakt(email)
     {
-    var choosenContact = this.state.contacts.filter(value => value.email == email);
-    //this.setState({ contacts: choosenContact });
-    this.setState({contact_to_show: choosenContact});
+      var choosenContact = this.state.contacts.filter(value => value.email == email);
+      this.setState({contact_to_show: choosenContact});
     }
 
 
-    cancel(event)
+    // ============================================================================================== StateController - Button: Aktion abbrechen (Neuer Kontakt oder Bearbeiten)
+    cancel()
     {
       contact_edit = false;
       contact_new = false;
@@ -344,7 +363,7 @@ class App extends React.Component {
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
       <div class="header">
-        <h1>Star Wars Kontaktverwaltung</h1>
+        <img src="./img/header.png" class="headerimage"></img>
       </div>
       <div class="flex-container">
       <div class="left">
@@ -353,6 +372,7 @@ class App extends React.Component {
         <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
             {this.state.contacts.map((item, index) => {
               return (
+                
                 <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact">
                 <table>
                   <tr>
@@ -372,6 +392,7 @@ class App extends React.Component {
                 </div>);
             })}
           </div>
+          
           <div class="right">
             <h2>Neuen Kontakt erstellen</h2>
 
@@ -388,9 +409,10 @@ class App extends React.Component {
             <label>Bild: <input id = "txt_image" onChange={this.updateImage.bind(this)} type="text"/></label>
             {<br></br>}
 
-            <button onClick={this.saveNewKontakt.bind(this)}>Speichern</button>
-            <button onClick={this.cancel.bind(this)}>Abbrechen</button>
+            <button onClick={this.saveNewKontakt.bind(this)} class="buttonSave">Speichern</button>
+            <button onClick={this.cancel.bind(this)} class="buttonCancel">Abbrechen</button>
           </div>
+
       </div>
       </React.Fragment>
       );
@@ -406,7 +428,7 @@ class App extends React.Component {
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
       <div class="header">
-        <h1>Star Wars Kontaktverwaltung</h1>
+        <img src="./img/header.png" class="headerimage"></img>
       </div>
       <div class="flex-container">
       <div class="left">
@@ -451,16 +473,13 @@ class App extends React.Component {
           <label>Bild: <input id = "txt_image" onChange={this.updateImage.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].image}/></label>
           {<br></br>}
 
-          <button onClick={this.saveKontakt.bind(this, this.state.contact_to_edit[0].email)}>Speichern</button>
-          <button onClick={this.cancel.bind(this)}>Abbrechen</button>
+          <button onClick={this.saveKontakt.bind(this, this.state.contact_to_edit[0].email)} class="buttonSave">Speichern</button>
+          <button onClick={this.cancel.bind(this)} class="buttonCancel">Abbrechen</button>
           </div>
       </div>
       </React.Fragment>
-
       );
-
     }
-    // ============================================================================================== Bereich: Wenn ein Kontakt gelöscht wurde
     else if(contact_deleted == true)
     {
       contact_deleted = false;
@@ -468,7 +487,7 @@ class App extends React.Component {
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
       <div class="header">
-        <h1>Star Wars Kontaktverwaltung</h1>
+        <img src="./img/header.png" class="headerimage"></img>
       </div>
       <div class="flex-container">
       <div class="left">
@@ -496,13 +515,12 @@ class App extends React.Component {
                 </div>);
             })}
           </div>
-          <div class="right">
-              <h2>Kontakt erfolgreich gelöscht</h2>
+        <div class="right">
+            <h2>Kontakt wurde gelöscht</h2>
           </div>
       </div>
       </React.Fragment>
       );
-
     }
     else
     {
@@ -513,7 +531,7 @@ class App extends React.Component {
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
       <div class="header">
-        <h1>Star Wars Kontaktverwaltung</h1>
+        <img src="./img/header.png" class="headerimage"></img>
       </div>
       <div class="flex-container">
         <div class="left">
@@ -521,8 +539,11 @@ class App extends React.Component {
 
           <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
               {this.state.contacts.map((item, index) => {
+                var contactStyles = {
+                  color: item === this.state.contact_to_show ? '#46733E' : ''
+                }
                 return (
-                  <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact">
+                  <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact" style={contactStyles}>
                   <table>
                     <tr>
                     <td>{<img src={item.image} class="contactpicture"></img>}</td>
@@ -540,7 +561,7 @@ class App extends React.Component {
                     </table>
                   </div>);
               })}
-          </div>
+        </div>
           <div class="right">
               <div class="mittig">{Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <img class="contactpicture_right" src={this.state.contact_to_show[0].image}></img> : <img class="contactpicture_right" src={this.state.contacts[0].image}></img>}</div>
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><h2>{this.state.contact_to_show[0].name}</h2></div> : <div><h2>{this.state.contacts[0].name}</h2></div>}
@@ -559,7 +580,7 @@ class App extends React.Component {
   }
 
 
-//Classe Aufrufn und HTML Element ändern
+//Classe Aufrufen und HTML Element ändern
 ReactDOM.render(
  <App />,
  document.getElementById('root')
