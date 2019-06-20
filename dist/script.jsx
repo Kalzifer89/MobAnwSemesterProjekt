@@ -4,19 +4,23 @@
 // Beschreibung : Charterstellung            //
 // Ersteller 1 : Sven Krumbeck | 931087 		 //
 // Ersteller 2 : Sven Möller   | 918958 		 //
-// Stand : 17.06.2019 						           //
-// Version : 0.1							               //
+// Stand : 20.06.2019 						           //
+// Version : 0.4							               //
 /////////////////////////////////////////////*/
 
+//Status für den aktuellen Bearbeitungsmodus
 var contact_deleted = false;
 var contact_new = false;
 var contact_edit = false;
 
 class App extends React.Component {
 
-  constructor(props) {
-    //Default Werte eistellen
+  // Konstructor erstellen
+  constructor(props) 
+  {
      super(props);
+
+    //  Array mit Objekten als beispiele füllen
      this.state = {
        contacts: [
         {
@@ -88,73 +92,143 @@ class App extends React.Component {
    }
 
 
-     //Update Funktionen für die ezeinen Elemente erzeugen
-     updateName(event) {
-       this.setState({ name: event.target.value });
-     }
+    //Update Funktionen für die ezeinen Elemente erzeugen
+    /*
+    // Test um alle gleichzeitig zu aktualisieren
+   updateInputs()
+   {
+    this.setState({ name: document.getElementById("txt_name").value });
+    this.setState({ age: document.getElementById("txt_age").value });
+    this.setState({ phone: document.getElementById("txt_phone").value });
+    this.setState({ email: document.getElementById("txt_email").value });
+    this.setState({ address: document.getElementById("txt_address").value });
+    this.setState({ image: document.getElementById("txt_image").value });
+   }*/
 
-     updateAge(event) {
-       this.setState({ age: event.target.value });
-     }
+    updateName(event) 
+    {
+      this.setState({ name: event.target.value });
+    }
 
-     updatePhone(event){
-       this.setState({ phone: event.target.value});
-     }
 
-     updateMail(event) {
-       this.setState({ email: event.target.value });
-     }
+    updateAge(event) 
+    {
+      this.setState({ age: event.target.value });
+    }
 
-     updateAddress(event) {
+
+    updatePhone(event)
+    {
+      this.setState({ phone: event.target.value});
+    }
+
+
+    updateMail(event) 
+    {
+      this.setState({ email: event.target.value });
+    }
+
+
+    updateAddress(event) 
+    {
       this.setState({ address: event.target.value });
     }
 
-    updateImage(event) {
+
+    updateImage(event) 
+    {
       this.setState({ image: event.target.value });
     }
 
-     addKontakt() {
-      contact_new = true;
-       this.setState({contact_new: contact_new});
-     }
 
-     saveKontakt(email) {
+    addKontakt() 
+    {
+      contact_new = true;
+      this.setState({contact_new: contact_new});
+    }
+
+
+    saveNewKontakt() 
+    {
+      // Status des aktuellen Bearbeitunsmodus zurücksetzen
       contact_new = false;
-      contact_edit = false;
+      //contact_edit = false;
       
       var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: this.state.image, isActive: this.state.isActive});
       
-      this.state.contacts[this.state.contacts.findIndex(value => value.email === email)].name = "Test";
-      
+      //Kontaktliste erneuern und über Änderungen benachrichtigen
       this.setState({contacts: newContacts});
     }
 
-     editKontakt(email){
+
+    saveKontakt(email) 
+    {
+      // Status des aktuellen Bearbeitunsmodus zurücksetzen
+      //contact_new = false;
+      contact_edit = false;
+
+      // Die ID des aktuell gewählten Kontakts suchen
+      var contact_to_save_id = this.state.contacts.findIndex(value => value.email === email);
+      // Den aktuell zum Bearbeiten ausgewählten Kontakt in einer variable speichern
+      var contact_to_save = this.state.contacts[contact_to_save_id];
+    
+      // Die einzelnen Einabefelder auslesen und in das Objekt im Kontaktarray speichern
+      contact_to_save.name = document.getElementById("txt_name").value;
+      contact_to_save.age = document.getElementById("txt_age").value;
+      contact_to_save.phone = document.getElementById("txt_phone").value;
+      contact_to_save.email = document.getElementById("txt_email").value;
+      contact_to_save.address = document.getElementById("txt_address").value;
+      contact_to_save.image = document.getElementById("txt_image").value;
+      
+      // Die aktualisierten Daten dem ausgewählten Objekt zuweisen
+      const contact_to_update = Object.assign({}, this.state.contacts[contact_to_save_id]);
+      
+      // Nur in dem ausgewählten Kontakt die Daten aktualisieren
+      this.setState({contacts:[
+        this.state.contacts.slice(0, contact_to_save_id),
+        contact_to_update,
+        this.state.contacts.slice(contact_to_save_id + 1)
+      ]});
+
+      // Die Kontaktliste aktualisieren
+      this.setState({contacts: this.state.contacts});
+
+    }
+
+
+    editKontakt(email)
+    {
       contact_edit = true;
       this.setState({contact_edit: contact_edit});
       var choosenContact = this.state.contacts.filter(value => value.email == email);
       this.setState({contact_to_edit: choosenContact});
     }
 
-     delKontakt(email) {
-      contact_deleted = true;
-      this.setState({contact_deleted: contact_deleted});
-      var newContacts = this.state.contacts.filter(value => value.email != email);
-      this.setState({contacts: newContacts});
-     }
 
-     showKontakt(email) {
-      var choosenContact = this.state.contacts.filter(value => value.email == email);
-      //this.setState({ contacts: choosenContact });
-      this.setState({contact_to_show: choosenContact});
-     }
+    delKontakt(email) 
+    {
+    contact_deleted = true;
+    this.setState({contact_deleted: contact_deleted});
+    var newContacts = this.state.contacts.filter(value => value.email != email);
+    this.setState({contacts: newContacts});
+    }
 
-     cancel(event){
-        contact_edit = false;
-        contact_new = false;
-        this.setState({contact_new: contact_new});
-        this.setState({contact_edit: contact_new});
-     }
+
+    showKontakt(email) 
+    {
+    var choosenContact = this.state.contacts.filter(value => value.email == email);
+    //this.setState({ contacts: choosenContact });
+    this.setState({contact_to_show: choosenContact});
+    }
+
+
+    cancel(event)
+    {
+      contact_edit = false;
+      contact_new = false;
+      this.setState({contact_new: contact_new});
+      this.setState({contact_edit: contact_new});
+    }
 
 
 //HTML Ausgeben um Formular Anzeigen
@@ -213,7 +287,7 @@ class App extends React.Component {
             <label>Bild: <input onChange={this.updateImage.bind(this)} type="text"/></label>
             {<br></br>}
 
-            <button onClick={this.saveKontakt.bind(this)}>Speichern</button>
+            <button onClick={this.saveNewKontakt.bind(this)}>Speichern</button>
             <button onClick={this.cancel.bind(this)}>Abbrechen</button>
           </div>
       </div>
@@ -265,18 +339,18 @@ class App extends React.Component {
         <div class="right">
           <h2>Kontakt bearbeiten</h2>
 
-          <label>Name: <input onChange={this.updateName.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].name}/></label>
+          <label>Name: <input id = "txt_name" onChange={this.updateName.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].name}/></label>
           {<br></br>}
 
-          <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1" defaultValue={this.state.contact_to_edit[0].age}/></label>
+          <label>Alter: <input id = "txt_age" onChange={this.updateAge.bind(this)} type="number" min="1" defaultValue={this.state.contact_to_edit[0].age}/></label>
           {<br></br>}
-          <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].phone}/></label>
+          <label>Telefon: <input id = "txt_phone" onChange={this.updatePhone.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].phone}/></label>
           {<br></br>}
-          <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"  defaultValue={this.state.contact_to_edit[0].email}/></label>
+          <label>E-Mail-Adresse: <input id = "txt_email" onChange={this.updateMail.bind(this)} type="mail"  defaultValue={this.state.contact_to_edit[0].email}/></label>
           {<br></br>}
-          <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].address}/></label>
+          <label>Adresse: <input id = "txt_address" onChange={this.updateAddress.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].address}/></label>
           {<br></br>}
-          <label>Bild: <input onChange={this.updateImage.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].image}/></label>
+          <label>Bild: <input id = "txt_image" onChange={this.updateImage.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].image}/></label>
           {<br></br>}
 
           <button onClick={this.saveKontakt.bind(this, this.state.contact_to_edit[0].email)}>Speichern</button>
@@ -338,7 +412,6 @@ class App extends React.Component {
     }
     else
     {
-      //console.log(this.state.contact_to_show[0]);
       // ============================================================================================== Bereich: Kontakte darstellen und rendern
       // Unter div class right wird jeweil das Array geprüft und wenn eines mit Inhalt vorhanden ist ausgegeben,
       // hierbei wird unterschieden, ob ein Kontakt ausgewählt wurde oder einfach die Liste ausgegben werden soll
