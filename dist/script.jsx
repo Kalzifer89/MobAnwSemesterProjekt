@@ -13,6 +13,13 @@ var contact_deleted = false;
 var contact_new = false;
 var contact_edit = false;
 
+// Globale Funktion für die Warnhinweise
+function errormessage(message)
+{
+  alert(message);
+}
+
+
 class App extends React.Component {
 
   // Konstructor erstellen
@@ -90,12 +97,10 @@ class App extends React.Component {
         contact_deleted: false
      };
    }
-
-
     //Update Funktionen für die ezeinen Elemente erzeugen
     /*
     // Test um alle gleichzeitig zu aktualisieren
-   updateInputs()
+   updateInputs(event)
    {
     this.setState({ name: document.getElementById("txt_name").value });
     this.setState({ age: document.getElementById("txt_age").value });
@@ -150,49 +155,99 @@ class App extends React.Component {
 
     saveNewKontakt() 
     {
-      // Status des aktuellen Bearbeitunsmodus zurücksetzen
+      // Status des aktuellen Bearbeitungsmodus zurücksetzen
       contact_new = false;
-      //contact_edit = false;
-      
-      var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: this.state.image, isActive: this.state.isActive});
-      
-      //Kontaktliste erneuern und über Änderungen benachrichtigen
-      this.setState({contacts: newContacts});
+
+      // Mailadresse für spätere Verarbeitung als String speichern
+      var mailaddress = document.getElementById("txt_email").value.toString();
+
+      // Handling der Fehlernachrichten, prüfen, ob jeweils ein Inhalt in den Textfeldern steht
+      if(document.getElementById("txt_name").value === '' || document.getElementById("txt_name").value === ' ')
+        errormessage("Bitte einen Namen eingeben");
+      else if(document.getElementById("txt_age").value === '' || document.getElementById("txt_age").value === ' ')
+        errormessage("Bitte ein Alter angeben");
+      else if(document.getElementById("txt_phone").value === '' || document.getElementById("txt_phone").value === ' ')
+        errormessage("Bitte eine Telefonnummer angeben");
+      else if(document.getElementById("txt_email").value === '' || document.getElementById("txt_email").value === ' ')
+        errormessage("Bitte die Emailadresse eingeben");
+      else if (mailaddress.search("@") === -1 || mailaddress.search(".") === -1) // Nachsehen ob eine potenziell korrekte Mailadresse eingegeben wurde
+        errormessage("Bitte eine Korrekte Mailadresse eingeben");
+      else if(document.getElementById("txt_address").value === '' || document.getElementById("txt_address").value === ' ')
+        errormessage("Bitte einen Adresse eingeben");
+      else
+      {
+        // Prüfen ob eine Bildadresse angegeben worden ist, wenn nicht, nutze ein Platzhalter-Bild
+        if (document.getElementById("txt_image").value === '' || document.getElementById("txt_image").value === ' ' || document.getElementById("txt_image").length < 1 )
+          var contactimage = 'https://www.firstvolunteerinsurance.com/wp-content/uploads/2018/01/Employee-Placeholder-Image.jpg';
+        else
+          var contactimage = this.state.image;
+
+
+          var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: contactimage, isActive: this.state.isActive});
+        
+          //Kontaktliste erneuern und über Änderungen benachrichtigen
+          this.setState({contacts: newContacts});
+      }
     }
 
 
     saveKontakt(email) 
     {
-      // Status des aktuellen Bearbeitunsmodus zurücksetzen
-      //contact_new = false;
+      // Status des aktuellen Bearbeitungsmodus zurücksetzen
+      //contact_edit = false;
+
+            // Mailadresse für spätere Verarbeitung als String speichern
+            var mailaddress = document.getElementById("txt_email").value.toString();
+
+            // Handling der Fehlernachrichten, prüfen, ob jeweils ein Inhalt in den Textfeldern steht
+            if(document.getElementById("txt_name").value === '' || document.getElementById("txt_name").value === ' ')
+              errormessage("Bitte einen Namen eingeben");
+            else if(document.getElementById("txt_age").value === '' || document.getElementById("txt_age").value === ' ')
+              errormessage("Bitte ein Alter angeben");
+            else if(document.getElementById("txt_phone").value === '' || document.getElementById("txt_phone").value === ' ')
+              errormessage("Bitte eine Telefonnummer angeben");
+            else if(document.getElementById("txt_email").value === '' || document.getElementById("txt_email").value === ' ')
+              errormessage("Bitte die Emailadresse eingeben");
+            else if (mailaddress.search("@") === -1 || mailaddress.search(".") === -1) // Nachsehen ob eine potenziell korrekte Mailadresse eingegeben wurde
+              errormessage("Bitte eine Korrekte Mailadresse eingeben");
+            else if(document.getElementById("txt_address").value === '' || document.getElementById("txt_address").value === ' ')
+              errormessage("Bitte einen Adresse eingeben");
+            else
+            {
+                    // Status des aktuellen Bearbeitungsmodus zurücksetzen
       contact_edit = false;
+              // Prüfen ob eine Bildadresse angegeben worden ist, wenn nicht, nutze ein Platzhalter-Bild
+              if (document.getElementById("txt_image").value === '' || document.getElementById("txt_image").value === ' ' || document.getElementById("txt_image").length < 1 )
+                var contactimage = 'https://www.firstvolunteerinsurance.com/wp-content/uploads/2018/01/Employee-Placeholder-Image.jpg';
+              else
+                var contactimage = this.state.image;
 
-      // Die ID des aktuell gewählten Kontakts suchen
-      var contact_to_save_id = this.state.contacts.findIndex(value => value.email === email);
-      // Den aktuell zum Bearbeiten ausgewählten Kontakt in einer variable speichern
-      var contact_to_save = this.state.contacts[contact_to_save_id];
-    
-      // Die einzelnen Einabefelder auslesen und in das Objekt im Kontaktarray speichern
-      contact_to_save.name = document.getElementById("txt_name").value;
-      contact_to_save.age = document.getElementById("txt_age").value;
-      contact_to_save.phone = document.getElementById("txt_phone").value;
-      contact_to_save.email = document.getElementById("txt_email").value;
-      contact_to_save.address = document.getElementById("txt_address").value;
-      contact_to_save.image = document.getElementById("txt_image").value;
-      
-      // Die aktualisierten Daten dem ausgewählten Objekt zuweisen
-      const contact_to_update = Object.assign({}, this.state.contacts[contact_to_save_id]);
-      
-      // Nur in dem ausgewählten Kontakt die Daten aktualisieren
-      this.setState({contacts:[
-        this.state.contacts.slice(0, contact_to_save_id),
-        contact_to_update,
-        this.state.contacts.slice(contact_to_save_id + 1)
-      ]});
+              // Die ID des aktuell gewählten Kontakts suchen
+              var contact_to_save_id = this.state.contacts.findIndex(value => value.email === email);
+              // Den aktuell zum Bearbeiten ausgewählten Kontakt in einer variable speichern
+              var contact_to_save = this.state.contacts[contact_to_save_id];
+            
+              // Die einzelnen Einabefelder auslesen und in das Objekt im Kontaktarray speichern
+              contact_to_save.name = document.getElementById("txt_name").value;
+              contact_to_save.age = document.getElementById("txt_age").value;
+              contact_to_save.phone = document.getElementById("txt_phone").value;
+              contact_to_save.email = document.getElementById("txt_email").value;
+              contact_to_save.address = document.getElementById("txt_address").value;
+              contact_to_save.image = document.getElementById("txt_image").value;
+              
+              // Die aktualisierten Daten dem ausgewählten Objekt zuweisen
+              const contact_to_update = Object.assign({}, this.state.contacts[contact_to_save_id]);
+              
+              // Nur in dem ausgewählten Kontakt die Daten aktualisieren
+              this.setState({contacts:[
+                this.state.contacts.slice(0, contact_to_save_id),
+                contact_to_update,
+                this.state.contacts.slice(contact_to_save_id + 1)
+              ]});
 
-      // Die Kontaktliste aktualisieren
-      this.setState({contacts: this.state.contacts});
-
+              // Die Kontaktliste aktualisieren
+              this.setState({contacts: this.state.contacts});
+      }
     }
 
 
@@ -274,17 +329,17 @@ class App extends React.Component {
           <div class="right">
             <h2>Neuen Kontakt erstellen</h2>
 
-            <label>Name: <input onChange={this.updateName.bind(this)} type="text"/></label>
+            <label>Name: <input id = "txt_name" onChange={this.updateName.bind(this)} type="text"/></label>
             {<br></br>}
-            <label>Alter: <input onChange={this.updateAge.bind(this)} type="number" min="1"/></label>
+            <label>Alter: <input id = "txt_age" onChange={this.updateAge.bind(this)} type="number" min="1"/></label>
             {<br></br>}
-            <label>Telefon: <input onChange={this.updatePhone.bind(this)} type="text"/></label>
+            <label>Telefon: <input id = "txt_phone" onChange={this.updatePhone.bind(this)} type="text"/></label>
             {<br></br>}
-            <label>E-Mail-Adresse: <input onChange={this.updateMail.bind(this)} type="mail"/></label>
+            <label>E-Mail-Adresse: <input id = "txt_email" onChange={this.updateMail.bind(this)} type="mail"/></label>
             {<br></br>}
-            <label>Adresse: <input onChange={this.updateAddress.bind(this)} type="text"/></label>
+            <label>Adresse: <input id = "txt_address" onChange={this.updateAddress.bind(this)} type="text"/></label>
             {<br></br>}
-            <label>Bild: <input onChange={this.updateImage.bind(this)} type="text"/></label>
+            <label>Bild: <input id = "txt_image" onChange={this.updateImage.bind(this)} type="text"/></label>
             {<br></br>}
 
             <button onClick={this.saveNewKontakt.bind(this)}>Speichern</button>
