@@ -561,7 +561,7 @@ class App extends React.Component {
                     </table>
                   </div>);
               })}
-        </div>
+          </div>
           <div class="right">
               <div class="mittig">{Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <img class="contactpicture_right" src={this.state.contact_to_show[0].image}></img> : <img class="contactpicture_right" src={this.state.contacts[0].image}></img>}</div>
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><h2>{this.state.contact_to_show[0].name}</h2></div> : <div><h2>{this.state.contacts[0].name}</h2></div>}
@@ -572,6 +572,9 @@ class App extends React.Component {
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><img src="./img/close-envelope.png" class="icon"></img> {this.state.contact_to_show[0].email}</div> : <div><img src="./img/close-envelope.png" class="icon"></img> {this.state.contacts[0].email}</div>}
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><img src="./img/address.png" class="icon"></img> {this.state.contact_to_show[0].address}</div> : <div><img src="./img/address.png" class="icon"></img> {this.state.contacts[0].address}</div>}
           </div>
+      </div>
+      <div class="bottom">
+        made with ♡ by Sven Krumbeck & Sven Möller
       </div>
       </React.Fragment>
       );

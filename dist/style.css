@@ -138,6 +138,13 @@ hr {
   text-align: center;
 }
 
+.bottom {
+  margin-top: 20px;
+  color: #616161;
+  font-size: 10pt;
+  text-align: center;
+}
+
 .contact {
   width: 100%;
  
