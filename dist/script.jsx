@@ -16,7 +16,7 @@ var contact_edit = false;
 class App extends React.Component {
 
   // Konstructor erstellen
-  constructor(props) 
+  constructor(props)
   {
      super(props);
 
@@ -105,13 +105,13 @@ class App extends React.Component {
     this.setState({ image: document.getElementById("txt_image").value });
    }*/
 
-    updateName(event) 
+    updateName(event)
     {
       this.setState({ name: event.target.value });
     }
 
 
-    updateAge(event) 
+    updateAge(event)
     {
       this.setState({ age: event.target.value });
     }
@@ -123,45 +123,45 @@ class App extends React.Component {
     }
 
 
-    updateMail(event) 
+    updateMail(event)
     {
       this.setState({ email: event.target.value });
     }
 
 
-    updateAddress(event) 
+    updateAddress(event)
     {
       this.setState({ address: event.target.value });
     }
 
 
-    updateImage(event) 
+    updateImage(event)
     {
       this.setState({ image: event.target.value });
     }
 
 
-    addKontakt() 
+    addKontakt()
     {
       contact_new = true;
       this.setState({contact_new: contact_new});
     }
 
 
-    saveNewKontakt() 
+    saveNewKontakt()
     {
       // Status des aktuellen Bearbeitunsmodus zurücksetzen
       contact_new = false;
       //contact_edit = false;
-      
+
       var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: this.state.image, isActive: this.state.isActive});
-      
+
       //Kontaktliste erneuern und über Änderungen benachrichtigen
       this.setState({contacts: newContacts});
     }
 
 
-    saveKontakt(email) 
+    saveKontakt(email)
     {
       // Status des aktuellen Bearbeitunsmodus zurücksetzen
       //contact_new = false;
@@ -171,7 +171,7 @@ class App extends React.Component {
       var contact_to_save_id = this.state.contacts.findIndex(value => value.email === email);
       // Den aktuell zum Bearbeiten ausgewählten Kontakt in einer variable speichern
       var contact_to_save = this.state.contacts[contact_to_save_id];
-    
+
       // Die einzelnen Einabefelder auslesen und in das Objekt im Kontaktarray speichern
       contact_to_save.name = document.getElementById("txt_name").value;
       contact_to_save.age = document.getElementById("txt_age").value;
@@ -179,10 +179,10 @@ class App extends React.Component {
       contact_to_save.email = document.getElementById("txt_email").value;
       contact_to_save.address = document.getElementById("txt_address").value;
       contact_to_save.image = document.getElementById("txt_image").value;
-      
+
       // Die aktualisierten Daten dem ausgewählten Objekt zuweisen
       const contact_to_update = Object.assign({}, this.state.contacts[contact_to_save_id]);
-      
+
       // Nur in dem ausgewählten Kontakt die Daten aktualisieren
       this.setState({contacts:[
         this.state.contacts.slice(0, contact_to_save_id),
@@ -205,7 +205,7 @@ class App extends React.Component {
     }
 
 
-    delKontakt(email) 
+    delKontakt(email)
     {
     contact_deleted = true;
     this.setState({contact_deleted: contact_deleted});
@@ -214,7 +214,7 @@ class App extends React.Component {
     }
 
 
-    showKontakt(email) 
+    showKontakt(email)
     {
     var choosenContact = this.state.contacts.filter(value => value.email == email);
     //this.setState({ contacts: choosenContact });
@@ -239,6 +239,9 @@ class App extends React.Component {
       return (
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
+      <div class="header">
+        <h1>Star Wars Kontaktverwaltung</h1>
+      </div>
       <div class="flex-container">
       <div class="left">
         <h1>Kontakte</h1>
@@ -304,6 +307,9 @@ class App extends React.Component {
       return (
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
+      <div class="header">
+        <h1>Star Wars Kontaktverwaltung</h1>
+      </div>
       <div class="flex-container">
       <div class="left">
         <h1>Kontakte</h1>
@@ -369,6 +375,9 @@ class App extends React.Component {
       return (
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
+      <div class="header">
+        <h1>Star Wars Kontaktverwaltung</h1>
+      </div>
       <div class="flex-container">
         <div class="left">
           <h1>Kontakte</h1>
@@ -418,6 +427,9 @@ class App extends React.Component {
       return (
         //Fragment Anzeigen um Abzugrenzen
       <React.Fragment>
+      <div class="header">
+        <h1>Star Wars Kontaktverwaltung</h1>
+      </div>
       <div class="flex-container">
         <div class="left">
           <h1>Kontakte</h1>

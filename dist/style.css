@@ -1,3 +1,6 @@
+@font-face { font-family: 'starjedi';
+             src: url('./fonts/Starjedi.ttf') format('truetype'); }
+
 body {
     display: flex;
     align-items: center;
@@ -85,28 +88,23 @@ button {
 }
 
 .flex-container{
-display: -webkit-flex;
-display: flex;
-height: 600px;
-width: 800px;
-display: flex;
-border: solid 2px #6d65a8;
-box-shadow: 5px 5px 5px rgba(0,0,0, 0.5);
-}
-
-.flex-item {
-  border: 1px black solid;
-  width: 100%;
-  overflow: scroll;
+  display: -webkit-flex;
+  display: flex;
+  height: 600px;
+  width: 800px;
+  border: solid 2px #42ade1;
+  box-shadow: 5px 5px 5px rgba(0,0,0, 0.5);
 }
 
 .left {
   border: 1px black solid;
   width: 100%;
+  color: white;
   overflow-x: hidden;
   overflow-y: scroll;
-  background: rgba(211,205,231, 0.8);
-  color: #000000;
+  order: 1;
+  background: rgba(28,80,133, 0.6);
+
 }
 
 .right {
@@ -115,12 +113,17 @@ box-shadow: 5px 5px 5px rgba(0,0,0, 0.5);
   width: 100%;
   background: rgba(0,0,0, 0.8);
   padding: 15px;
+  order: 2;
 }
 
 .mittig {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.header {
+  color: fef747;
 }
 
 .contact {
