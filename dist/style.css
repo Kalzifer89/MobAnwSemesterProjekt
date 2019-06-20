@@ -66,10 +66,17 @@ table {
 }
 
 input {
+  margin-bottom: 20px;
+  width: 260px;
   background-color:#0a2e46;
   border:1px solid #42ade1;
   float: right;
   color: #89c9ed;
+}
+
+label {
+  margin-bottom: 10px;
+  line-height: 20px;
 }
 
 hr {

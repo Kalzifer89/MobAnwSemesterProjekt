@@ -402,7 +402,7 @@ class App extends React.Component {
             {<br></br>}
             <label>Telefon: <input id = "txt_phone" onChange={this.updatePhone.bind(this)} type="text"/></label>
             {<br></br>}
-            <label>E-Mail-Adresse: <input id = "txt_email" onChange={this.updateMail.bind(this)} type="mail"/></label>
+            <label>E-Mail-Adresse: <input id = "txt_email" onChange={this.updateMail.bind(this)} type="email" /></label>
             {<br></br>}
             <label>Adresse: <input id = "txt_address" onChange={this.updateAddress.bind(this)} type="text"/></label>
             {<br></br>}
@@ -461,12 +461,11 @@ class App extends React.Component {
 
           <label>Name: <input id = "txt_name" onChange={this.updateName.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].name}/></label>
           {<br></br>}
-
           <label>Alter: <input id = "txt_age" onChange={this.updateAge.bind(this)} type="number" min="1" defaultValue={this.state.contact_to_edit[0].age}/></label>
           {<br></br>}
           <label>Telefon: <input id = "txt_phone" onChange={this.updatePhone.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].phone}/></label>
           {<br></br>}
-          <label>E-Mail-Adresse: <input id = "txt_email" onChange={this.updateMail.bind(this)} type="mail"  defaultValue={this.state.contact_to_edit[0].email}/></label>
+          <label>E-Mail-Adresse: <input id = "txt_email" onChange={this.updateMail.bind(this)} type="email"  defaultValue={this.state.contact_to_edit[0].email}/></label>
           {<br></br>}
           <label>Adresse: <input id = "txt_address" onChange={this.updateAddress.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].address}/></label>
           {<br></br>}
