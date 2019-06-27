@@ -5,8 +5,8 @@
 // Beschreibung : Charterstellung            //
 // Ersteller 1 : Sven Krumbeck | 931087 		 //
 // Ersteller 2 : Sven Möller   | 918958 		 //
-// Stand : 17.06.2019 						           //
-// Version : 0.1							               //
+// Stand : 27.06.2019 						           //
+// Version : 0.3							               //
 ///////////////////////////////////////////////
 -->
 
@@ -27,11 +27,21 @@
   <body>
     <!-- Aktuelle Bibliotheken importieren -->
     <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script><script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/babel-standalone/babel.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="script.jsx" type="text/babel"></script>
+    
+    <!-- Header -->
+    <div class="header">
+      <img src="./img/header.png" class="headerimage"></img>
+    </div>
 
+    <!-- Bereich für React -->
+    <div id="root"> </div>
 
-        <div id="root"> </div>
+    <!-- Footer -->
+    <div class="bottom">
+      made with ♡ by Sven Krumbeck & Sven Möller
+    </div>
   </body>
 
 </html>

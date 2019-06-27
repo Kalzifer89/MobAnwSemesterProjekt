@@ -8,7 +8,7 @@ body {
     flex-direction: column;
     height: 100vh;
     background: #000000;
-    background-image: url("https://hdwallpaper20.com/wp-content/uploads/2016/05/star-wars-wallpaper-planet.jpg");
+    background-image: url("./img/background.jpg");
     font-family: 'Saira', sans-serif;
 }
 

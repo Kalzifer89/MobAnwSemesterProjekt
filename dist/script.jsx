@@ -4,12 +4,12 @@
 // Beschreibung : Charterstellung            //
 // Ersteller 1 : Sven Krumbeck | 931087 		 //
 // Ersteller 2 : Sven Möller   | 918958 		 //
-// Stand : 20.06.2019 						           //
-// Version : 0.4							               //
+// Stand : 27.06.2019 						           //
+// Version : 0.5							               //
 /////////////////////////////////////////////*/
 
-//Status für den aktuellen Bearbeitungsmodus
 
+//Status für den aktuellen Bearbeitungsmodus initialisieren
 var contact_new = false;
 var contact_edit = false;
 var contact_deleted = false;
@@ -121,20 +121,8 @@ class App extends React.Component {
         contact_deleted: false
      };
    }
-    //Update Funktionen für die ezeinen Elemente erzeugen
-    /*
-    // Test um alle gleichzeitig zu aktualisieren
-   updateInputs(event)
-   {
-    this.setState({ name: document.getElementById("txt_name").value });
-    this.setState({ age: document.getElementById("txt_age").value });
-    this.setState({ phone: document.getElementById("txt_phone").value });
-    this.setState({ email: document.getElementById("txt_email").value });
-    this.setState({ address: document.getElementById("txt_address").value });
-    this.setState({ image: document.getElementById("txt_image").value });
-   }*/
 
-    // ============================================================================================== StateController für die Überwachung der Eingabfelder
+    // ============================================================================================== Die StateController für die Überwachung der jeweiligen Eingabfelder
     updateName(event)
     {
       this.setState({ name: event.target.value });
@@ -183,7 +171,7 @@ class App extends React.Component {
       // Mailadresse für spätere Verarbeitung als String speichern
       var mailaddress = document.getElementById("txt_email").value.toString();
 
-      // Handling der Fehlernachrichten, prüfen, ob jeweils ein Inhalt in den Textfeldern steht
+      // -------------------------------------Anfang -> Handling der Fehlernachrichten, prüfen, ob jeweils ein Inhalt in den Textfeldern steht
       if(document.getElementById("txt_name").value === '' || document.getElementById("txt_name").value === ' ')
       {
         message("Bitte einen Namen eingeben");
@@ -226,13 +214,13 @@ class App extends React.Component {
           var contactimage = this.state.image;
         }
 
+        // Wenn alles ok ist, Kontaktliste erneuern und über Änderungen benachrichtigen
           var newContacts = this.state.contacts.concat({name: this.state.name, age: this.state.age, phone: this.state.phone, email: this.state.email, address: this.state.address, image: contactimage, isActive: this.state.isActive});
-
-          //Kontaktliste erneuern und über Änderungen benachrichtigen
           this.setState({contacts: newContacts});
           contact_new = false;
           message("Neuer Kontakt "+ this.state.name + " erfolgreich erstellt");
       }
+      // -------------------------------------Ende -> Handling der Fehlernachrichten, prüfen, ob jeweils ein Inhalt in den Textfeldern steht
     }
 
     // ============================================================================================== StateController - Kontakt bearbeiten
@@ -354,48 +342,61 @@ class App extends React.Component {
     }
 
 
-//HTML Ausgeben um Formular Anzeigen
-  render() {
-    // ============================================================================================== Bereich: Neuen Kontakt hinzufügen
+    // ============================================================================================== Linker Bereich mit Kontaktauflistung
+    // Ausgelagtert, um von überall aus diesen Bereich aufrufen und zentral bearbeiten zu können.
+    // Hierduch modular nutzbar
+    leftArea()
+    {
+      return (
+      <div class="left">
+      <h1>Kontakte</h1>
+  
+      <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
+          {this.state.contacts.map((item, index) => {
+            return (
+              
+              <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact">
+              <table>
+                <tr>
+                <td>{<img src={item.image} class="contactpicture"></img>}</td>
+              <td class="adress">
+                <span class="contactName">{item.name}({item.age})</span>
+              {<br></br>}
+                <span class="contactInfo">
+                {item.email}</span>
+              {<br></br>}</td>
+              <td>
+                {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
+                {<button onClick={this.delKontakt.bind(this, item.email)} class="button" ><img src="./img/rubbish-bin.png" /></button>}
+                </td>
+                </tr>
+                </table>
+              </div>);
+          })}
+        </div>
+        );
+    }
+
+
+    
+    // =======================================================================================================================================
+    // VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Beginn RENDER-Bereich VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+    // =======================================================================================================================================
+ 
+    render() {
+    // ============================================================================ Bereich: Neuen Kontakt hinzufügen
+    // Wird ein neuer Kontakt angelegt, werden im rechten Bereich Eingabefelder zur Verfügung gestellt
     if(contact_new == true)
     {
       return (
-        //Fragment Anzeigen um Abzugrenzen
+        // Fragment anzeigen um Abzugrenzen
       <React.Fragment>
-      <div class="header">
-        <img src="./img/header.png" class="headerimage"></img>
-      </div>
-      <div class="flex-container">
-      <div class="left">
-        <h1>Kontakte</h1>
+        <div class="flex-container">
 
-        <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
-            {this.state.contacts.map((item, index) => {
-              return (
-                
-                <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact">
-                <table>
-                  <tr>
-                  <td>{<img src={item.image} class="contactpicture"></img>}</td>
-                <td class="adress">
-                  <span class="contactName">{item.name}({item.age})</span>
-                {<br></br>}
-                  <span class="contactInfo">
-                  {item.email}</span>
-                {<br></br>}</td>
-                <td>
-                  {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
-                  {<button onClick={this.delKontakt.bind(this, item.email)} class="button" ><img src="./img/rubbish-bin.png" /></button>}
-                  </td>
-                  </tr>
-                  </table>
-                </div>);
-            })}
-          </div>
-          
+          {this.leftArea()}
+
           <div class="right">
             <h2>Neuen Kontakt erstellen</h2>
-
             <label>Name: <input id = "txt_name" onChange={this.updateName.bind(this)} type="text"/></label>
             {<br></br>}
             <label>Alter: <input id = "txt_age" onChange={this.updateAge.bind(this)} type="number" min="1"/></label>
@@ -412,155 +413,76 @@ class App extends React.Component {
             <button onClick={this.saveNewKontakt.bind(this)} class="buttonSave">Speichern</button>
             <button onClick={this.cancel.bind(this)} class="buttonCancel">Abbrechen</button>
           </div>
-
-      </div>
+        </div>
       </React.Fragment>
       );
     }
     // ============================================================================================== Bereich: Kontakt bearbeiten
+    // Soll ein Kontakt bearbeitet werden, werden im rechten Bereich die Eingabefelder 
+    // angezeigt und bereits mit den alten Daten gefüllt
     if(contact_edit == true)
     {
-
-      //console.log(this.state.contacts.name);
-      //console.log(this.state.contact_to_edit[0].name);
-
       return (
-        //Fragment Anzeigen um Abzugrenzen
+        // Fragment anzeigen um Abzugrenzen
       <React.Fragment>
-      <div class="header">
-        <img src="./img/header.png" class="headerimage"></img>
-      </div>
-      <div class="flex-container">
-      <div class="left">
-        <h1>Kontakte</h1>
+        <div class="flex-container">
 
-        <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
-            {this.state.contacts.map((item, index) => {
-              return (
-                <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact">
-                <table>
-                  <tr>
-                  <td>{<img src={item.image} class="contactpicture"></img>}</td>
-                <td class="adress">
-                  <span class="contactName">{item.name}({item.age})</span>
-                {<br></br>}
-                  <span class="contactInfo">
-                  {item.email}</span>
-                {<br></br>}</td>
-                <td>
-                  {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
-                  {<button onClick={this.delKontakt.bind(this, item.email)} class="button" ><img src="./img/rubbish-bin.png" /></button>}
-                  </td>
-                  </tr>
-                  </table>
-                </div>);
-            })}
+          {this.leftArea()}
+
+          <div class="right">
+            <h2>Kontakt bearbeiten</h2>
+            <label>Name: <input id = "txt_name" onChange={this.updateName.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].name}/></label>
+            {<br></br>}
+            <label>Alter: <input id = "txt_age" onChange={this.updateAge.bind(this)} type="number" min="1" defaultValue={this.state.contact_to_edit[0].age}/></label>
+            {<br></br>}
+            <label>Telefon: <input id = "txt_phone" onChange={this.updatePhone.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].phone}/></label>
+            {<br></br>}
+            <label>E-Mail-Adresse: <input id = "txt_email" onChange={this.updateMail.bind(this)} type="email"  defaultValue={this.state.contact_to_edit[0].email}/></label>
+            {<br></br>}
+            <label>Adresse: <input id = "txt_address" onChange={this.updateAddress.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].address}/></label>
+            {<br></br>}
+            <label>Bild: <input id = "txt_image" onChange={this.updateImage.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].image}/></label>
+            {<br></br>}
+
+            <button onClick={this.saveKontakt.bind(this, this.state.contact_to_edit[0].email)} class="buttonSave">Speichern</button>
+            <button onClick={this.cancel.bind(this)} class="buttonCancel">Abbrechen</button>
           </div>
-        <div class="right">
-          <h2>Kontakt bearbeiten</h2>
-
-          <label>Name: <input id = "txt_name" onChange={this.updateName.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].name}/></label>
-          {<br></br>}
-          <label>Alter: <input id = "txt_age" onChange={this.updateAge.bind(this)} type="number" min="1" defaultValue={this.state.contact_to_edit[0].age}/></label>
-          {<br></br>}
-          <label>Telefon: <input id = "txt_phone" onChange={this.updatePhone.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].phone}/></label>
-          {<br></br>}
-          <label>E-Mail-Adresse: <input id = "txt_email" onChange={this.updateMail.bind(this)} type="email"  defaultValue={this.state.contact_to_edit[0].email}/></label>
-          {<br></br>}
-          <label>Adresse: <input id = "txt_address" onChange={this.updateAddress.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].address}/></label>
-          {<br></br>}
-          <label>Bild: <input id = "txt_image" onChange={this.updateImage.bind(this)} type="text" defaultValue={this.state.contact_to_edit[0].image}/></label>
-          {<br></br>}
-
-          <button onClick={this.saveKontakt.bind(this, this.state.contact_to_edit[0].email)} class="buttonSave">Speichern</button>
-          <button onClick={this.cancel.bind(this)} class="buttonCancel">Abbrechen</button>
-          </div>
-      </div>
+        </div>
       </React.Fragment>
       );
     }
+        // ============================================================================================== Bereich: Kontakt gelöscht
+    // Sobald ein Kontakt erfolgreich gelöscht wurde, wird dieser Eintrag entsprechend 
+    // angepasst und eine Rückmeldung gegeben
     else if(contact_deleted == true)
     {
       contact_deleted = false;
       return (
-        //Fragment Anzeigen um Abzugrenzen
+        // Fragment anzeigen um abzugrenzen
       <React.Fragment>
-      <div class="header">
-        <img src="./img/header.png" class="headerimage"></img>
-      </div>
-      <div class="flex-container">
-      <div class="left">
-        <h1>Kontakte</h1>
+        <div class="flex-container">
 
-        <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
-            {this.state.contacts.map((item, index) => {
-              return (
-                <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact">
-                <table>
-                  <tr>
-                  <td>{<img src={item.image} class="contactpicture"></img>}</td>
-                <td class="adress">
-                  <span class="contactName">{item.name}({item.age})</span>
-                {<br></br>}
-                  <span class="contactInfo">
-                  {item.email}</span>
-                {<br></br>}</td>
-                <td>
-                  {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
-                  {<button onClick={this.delKontakt.bind(this, item.email)} class="button" ><img src="./img/rubbish-bin.png" /></button>}
-                  </td>
-                  </tr>
-                  </table>
-                </div>);
-            })}
+          {this.leftArea()}
+
+          <div class="right">
+              <h2>Kontakt wurde gelöscht</h2>
           </div>
-        <div class="right">
-            <h2>Kontakt wurde gelöscht</h2>
-          </div>
-      </div>
+        </div>
       </React.Fragment>
       );
     }
     else
     {
       // ============================================================================================== Bereich: Kontakte darstellen und rendern
-      // Unter div class right wird jeweil das Array geprüft und wenn eines mit Inhalt vorhanden ist ausgegeben,
+      // Unter div class right wird jeweils das Array geprüft und wenn eines mit Inhalt vorhanden ist ausgegeben,
       // hierbei wird unterschieden, ob ein Kontakt ausgewählt wurde oder einfach die Liste ausgegben werden soll
       return (
-        //Fragment Anzeigen um Abzugrenzen
+        // Fragment anzeigen um abzugrenzen
       <React.Fragment>
-      <div class="header">
-        <img src="./img/header.png" class="headerimage"></img>
-      </div>
-      <div class="flex-container">
-        <div class="left">
-          <h1>Kontakte</h1>
+        <div class="flex-container">
 
-          <button onClick={this.addKontakt.bind(this)} class="newContact">Kontakt hinzufügen</button>
-              {this.state.contacts.map((item, index) => {
-                var contactStyles = {
-                  color: item === this.state.contact_to_show ? '#46733E' : ''
-                }
-                return (
-                  <div onClick={this.showKontakt.bind(this, item.email)} key={index} class="contact" style={contactStyles}>
-                  <table>
-                    <tr>
-                    <td>{<img src={item.image} class="contactpicture"></img>}</td>
-                  <td class="adress">
-                    <span class="contactName">{item.name}({item.age})</span>
-                  {<br></br>}
-                    <span class="contactInfo">
-                    {item.email}</span>
-                  {<br></br>}</td>
-                  <td>
-                    {<button onClick={this.editKontakt.bind(this, item.email)} class="button" ><img src="./img/writing.png"/></button>}
-                    {<button onClick={this.delKontakt.bind(this, item.email)} class="button" ><img src="./img/rubbish-bin.png" /></button>}
-                    </td>
-                    </tr>
-                    </table>
-                  </div>);
-              })}
-          </div>
+          {this.leftArea()}
+
           <div class="right">
               <div class="mittig">{Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <img class="contactpicture_right" src={this.state.contact_to_show[0].image}></img> : <img class="contactpicture_right" src={this.state.contacts[0].image}></img>}</div>
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><h2>{this.state.contact_to_show[0].name}</h2></div> : <div><h2>{this.state.contacts[0].name}</h2></div>}
@@ -571,10 +493,7 @@ class App extends React.Component {
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><img src="./img/close-envelope.png" class="icon"></img> {this.state.contact_to_show[0].email}</div> : <div><img src="./img/close-envelope.png" class="icon"></img> {this.state.contacts[0].email}</div>}
               {Array.isArray(this.state.contact_to_show) && this.state.contact_to_show[0] ? <div><img src="./img/address.png" class="icon"></img> {this.state.contact_to_show[0].address}</div> : <div><img src="./img/address.png" class="icon"></img> {this.state.contacts[0].address}</div>}
           </div>
-      </div>
-      <div class="bottom">
-        made with ♡ by Sven Krumbeck & Sven Möller
-      </div>
+        </div>
       </React.Fragment>
       );
     }
@@ -582,7 +501,7 @@ class App extends React.Component {
   }
 
 
-//Classe Aufrufen und HTML Element ändern
+// Klasse aufrufen und HTML Element ändern
 ReactDOM.render(
  <App />,
  document.getElementById('root')
